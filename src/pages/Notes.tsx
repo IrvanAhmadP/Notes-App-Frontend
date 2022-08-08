@@ -1,0 +1,126 @@
+import { useState } from "react";
+import {
+  Header,
+  Modal,
+  Container,
+  Note,
+  NewNoteButton,
+  NavBar,
+  SimpleButton,
+} from "src/components";
+import { ACTIONS, useAppContext } from "src/contexts/appContext";
+
+type NotesProps = {
+  page: "active" | "archived";
+};
+
+function Notes({ page }: NotesProps) {
+  const { state, dispatch } = useAppContext();
+  const [modalData, setModalData] = useState<{
+    id: number | undefined;
+    isOpen: boolean;
+    title: string;
+    noteTitle: string | undefined;
+  }>({
+    id: undefined,
+    isOpen: false,
+    title: "Delete note",
+    noteTitle: undefined,
+  });
+
+  const handleCloseModal = () => {
+    setModalData({ ...modalData, isOpen: false });
+  };
+
+  const handleOpenModalDeleteNote = (id: number, noteTitle: string) => {
+    setModalData({
+      ...modalData,
+      id: id,
+      isOpen: true,
+      noteTitle: noteTitle,
+    });
+  };
+
+  const hanldeDeleteNote = () => {
+    handleCloseModal();
+
+    dispatch({
+      type: ACTIONS.DELETE,
+      payload: { id: modalData.id },
+    });
+  };
+
+  return (
+    <div className="App">
+      <Header />
+      <main className="pb-[56px] md:pb-[90px]">
+        <Container>
+          <h2 className="text-xl capitalize font-semibold py-2">
+            {page} Notes
+          </h2>
+          {state.search !== "" && (
+            <p className="mb-2 font-semibold text-gray-500">
+              Search results for "{state.search}"
+            </p>
+          )}
+
+          <div className="first:rounded-lg first:bg-red-100">
+            {state.notes.map(
+              (note: any) =>
+                isShowNote(note.title, note.archived, page, state.search) && (
+                  <Note
+                    key={note.id}
+                    {...note}
+                    handleOpenModalDeleteNote={handleOpenModalDeleteNote}
+                  />
+                )
+            )}
+          </div>
+        </Container>
+        <Modal {...modalData} onClose={handleCloseModal}>
+          <p>
+            Are you sure want to delete{" "}
+            <span className="font-semibold">{modalData.noteTitle}</span>?
+          </p>
+          <div className="grid text-white grid-cols-2 w-56 float-right gap-2">
+            <SimpleButton
+              color="bg-gray-300"
+              classes="text-black"
+              handleClick={handleCloseModal}
+            >
+              Cancel
+            </SimpleButton>
+            <SimpleButton color="bg-red-500" handleClick={hanldeDeleteNote}>
+              Delete
+            </SimpleButton>
+          </div>
+        </Modal>
+
+        <NewNoteButton />
+        <NavBar page={page} />
+      </main>
+    </div>
+  );
+}
+
+function isShowNote(
+  title: string,
+  archived: boolean,
+  page: string,
+  search: string
+) {
+  if (
+    search === "" ||
+    title.toLowerCase().search(search.toLowerCase()) !== -1
+  ) {
+    if (page === "active" && archived === false) {
+      return true;
+    }
+
+    if (page === "archived" && archived === true) {
+      return true;
+    }
+  }
+}
+
+export default Notes;
