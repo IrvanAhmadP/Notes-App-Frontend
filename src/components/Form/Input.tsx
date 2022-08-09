@@ -1,11 +1,12 @@
 type InputProps = {
   label: string;
+  error?: string;
   placeholder: string;
   value: string;
   handleChange: (e: any) => void;
 };
 
-function Input({ label, placeholder, value, handleChange }: InputProps) {
+function Input({ label, error, placeholder, value, handleChange }: InputProps) {
   return (
     <div className="my-2">
       <label className="block font-semibold mb-1 text-gray-500">{label}</label>
@@ -15,6 +16,7 @@ function Input({ label, placeholder, value, handleChange }: InputProps) {
         onChange={handleChange}
         placeholder={placeholder}
       />
+      <span className="text-sm text-red-400 font-bold">{error}</span>
     </div>
   );
 }

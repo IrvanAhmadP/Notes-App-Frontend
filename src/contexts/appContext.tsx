@@ -31,6 +31,7 @@ const AppContext = createContext<{
 }>({ state: initialStates, dispatch: () => {} });
 
 const ACTIONS = {
+  ADD: "ADD",
   ARCHIVE: "ARCHIVE",
   UNARCHIVE: "UNARCHIVE",
   DELETE: "DELETE",
@@ -41,6 +42,11 @@ function reducer(state: AppProps, action: any) {
   const { type, payload } = action;
 
   switch (type) {
+    case ACTIONS.ADD:
+      return {
+        ...state,
+        notes: [...state.notes, payload],
+      };
     case ACTIONS.ARCHIVE:
       return {
         ...state,
