@@ -1,9 +1,19 @@
 import { Container } from "src/components";
 import { ACTIONS, useAppContext } from "src/contexts/appContext";
 import { Link } from "react-router-dom";
+import { useRef } from "react";
 
 function Header() {
   const { state, dispatch } = useAppContext();
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  const handleResetSearch = () => {
+    dispatch({ type: ACTIONS.RESERT_SEARCH });
+
+    if (null !== searchRef.current) {
+      searchRef.current.focus();
+    }
+  };
 
   return (
     <header className="bg-slate-800 py-4 text-white">
@@ -16,7 +26,7 @@ function Header() {
           <div className="flex">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="text-white mt-3 ml-3 absolute hover:text-gray-400 h-4"
+              className="text-white mt-3 ml-3 absolute hover:text-gray-400 h-4 w-4"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -30,6 +40,7 @@ function Header() {
             <input
               className="bg-inherit h-10 pl-9 pr-4 outline-none border border-slate-500 bg-slate-700 rounded-md placeholder:text-gray-200"
               placeholder="Search"
+              ref={searchRef}
               value={state.search}
               onChange={(e) =>
                 dispatch({
@@ -38,6 +49,23 @@ function Header() {
                 })
               }
             />
+
+            {state.search !== "" && (
+              <button className="relative" onClick={handleResetSearch}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 absolute -ml-6 -mt-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
       </Container>

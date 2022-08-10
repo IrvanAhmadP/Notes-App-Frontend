@@ -12,14 +12,16 @@ import { ACTIONS, useAppContext } from "src/contexts/appContext";
 
 function NewNote() {
   const navigate = useNavigate();
-  const [note, setNote] = useState({
+  const { dispatch } = useAppContext();
+
+  const initialNote = {
     title: "",
     titleError: "",
     body: "",
     archived: false,
     disabledSaveButton: true,
-  });
-  const { dispatch } = useAppContext();
+  };
+  const [note, setNote] = useState(initialNote);
 
   const handleChangeTitle = (e: any) => {
     const value = e.target.value;
@@ -47,13 +49,7 @@ function NewNote() {
   };
 
   const handleResetNote = () => {
-    setNote({
-      title: "",
-      titleError: "",
-      body: "",
-      archived: false,
-      disabledSaveButton: true,
-    });
+    setNote(initialNote);
   };
 
   const handleSaveNote = () => {

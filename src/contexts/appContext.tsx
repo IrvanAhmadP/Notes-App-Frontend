@@ -36,6 +36,7 @@ const ACTIONS = {
   UNARCHIVE: "UNARCHIVE",
   DELETE: "DELETE",
   SEARCH: "SEARCH",
+  RESERT_SEARCH: "RESERT_SEARCH",
 };
 
 function reducer(state: AppProps, action: any) {
@@ -77,6 +78,12 @@ function reducer(state: AppProps, action: any) {
       return {
         ...state,
         search: payload.search,
+      };
+
+    case ACTIONS.RESERT_SEARCH:
+      return {
+        ...state,
+        search: "",
       };
 
     default:
