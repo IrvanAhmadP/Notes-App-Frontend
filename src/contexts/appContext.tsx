@@ -32,6 +32,7 @@ const AppContext = createContext<{
 
 const ACTIONS = {
   ADD: "ADD",
+  EDIT: "EDIT",
   ARCHIVE: "ARCHIVE",
   UNARCHIVE: "UNARCHIVE",
   DELETE: "DELETE",
@@ -47,6 +48,14 @@ function reducer(state: AppProps, action: any) {
       return {
         ...state,
         notes: [...state.notes, payload],
+      };
+    case ACTIONS.EDIT:
+      return {
+        ...state,
+        notes: state.notes.map(function (note) {
+          if (note.id === payload.id) note = payload;
+          return note;
+        }),
       };
     case ACTIONS.ARCHIVE:
       return {

@@ -1,6 +1,7 @@
 import { SimpleButton } from "src/components";
 import { showFormattedDate } from "src/utils/index";
 import { ACTIONS, useAppContext } from "src/contexts/appContext";
+import { Link } from "react-router-dom";
 
 type NoteProps = {
   id: number;
@@ -30,7 +31,11 @@ function Note({
       <p className="text-justify">{body}</p>
 
       <div className="grid max-w-lg grid-cols-3 gap-4 mt-2 text-white font-semibold">
-        <SimpleButton color="bg-blue-500">Edit</SimpleButton>
+        <Link className="w-full" to={`/edit/${id}`}>
+          <SimpleButton classes="w-full" color="bg-blue-500">
+            Edit
+          </SimpleButton>
+        </Link>
 
         {archived ? (
           <SimpleButton

@@ -1,6 +1,6 @@
 type CheckboxProps = {
   id: string;
-  checked: boolean;
+  checked: boolean | undefined;
   label: string;
   handleChange: (e: any) => void;
 };

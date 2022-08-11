@@ -2,7 +2,7 @@ type InputProps = {
   label: string;
   error?: string;
   placeholder: string;
-  value: string;
+  value: string | undefined;
   handleChange: (e: any) => void;
 };
 

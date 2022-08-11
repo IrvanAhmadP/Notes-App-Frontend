@@ -1,7 +1,7 @@
 type TextareaProps = {
   label: string;
   placeholder: string;
-  value: string;
+  value: string | undefined;
   handleChange: (e: any) => void;
 };
 
