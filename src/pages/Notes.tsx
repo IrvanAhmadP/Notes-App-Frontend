@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Header,
   Modal,
@@ -26,6 +27,21 @@ function Notes({ page }: NotesProps) {
     isOpen: false,
     title: "Delete note",
     noteTitle: undefined,
+  });
+
+  const filteredNotes = state.notes.filter((note) => {
+    let searchMatch = true;
+    if (state.search !== "") {
+      searchMatch = note.title.toLowerCase().search(state.search) !== -1;
+    }
+
+    if (page === "active" && note.archived === false && searchMatch) {
+      return true;
+    } else if (page === "archived" && note.archived === true && searchMatch) {
+      return true;
+    }
+
+    return false;
   });
 
   const handleCloseModal = () => {
@@ -60,20 +76,29 @@ function Notes({ page }: NotesProps) {
           </h2>
           {state.search !== "" && (
             <p className="mb-2 font-semibold text-gray-500">
-              Search results for "{state.search}"
+              {filteredNotes.length} results for "{state.search}"
             </p>
           )}
 
           <div className="first:rounded-lg first:bg-red-100">
-            {state.notes.map(
-              (note: any) =>
-                isShowNote(note.title, note.archived, page, state.search) && (
-                  <Note
-                    key={note.id}
-                    {...note}
-                    handleOpenModalDeleteNote={handleOpenModalDeleteNote}
-                  />
-                )
+            {filteredNotes.length === 0 ? (
+              <div className="flex h-[calc(100vh_-_128px_-_57px)] md:h-[calc(100vh_-_162px_-_57px)] items-center justify-center">
+                <p className="font-semibold">
+                  Data not found,{" "}
+                  <Link className="text-blue-500" to="/">
+                    create a note
+                  </Link>
+                  .
+                </p>
+              </div>
+            ) : (
+              filteredNotes.map((note: any) => (
+                <Note
+                  key={note.id}
+                  {...note}
+                  handleOpenModalDeleteNote={handleOpenModalDeleteNote}
+                />
+              ))
             )}
           </div>
         </Container>
@@ -101,26 +126,6 @@ function Notes({ page }: NotesProps) {
       </main>
     </div>
   );
-}
-
-function isShowNote(
-  title: string,
-  archived: boolean,
-  page: string,
-  search: string
-) {
-  if (
-    search === "" ||
-    title.toLowerCase().search(search.toLowerCase()) !== -1
-  ) {
-    if (page === "active" && archived === false) {
-      return true;
-    }
-
-    if (page === "archived" && archived === true) {
-      return true;
-    }
-  }
 }
 
 export default Notes;
