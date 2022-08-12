@@ -6,7 +6,7 @@ type NavBarProps = {
 
 function NavBar({ page }: NavBarProps) {
   return (
-    <nav className="flex fixed bottom-0 border-t font-semibold border-gray-300 z-10 divide-x bg-white w-full">
+    <nav className="fixed bottom-0 z-10 flex w-full divide-x border-t border-gray-300 bg-white font-semibold">
       {page === "active" ? <ActiveNavLinks /> : <ArchivedNavLinks />}
     </nav>
   );
@@ -15,10 +15,10 @@ function NavBar({ page }: NavBarProps) {
 function ActiveNavLinks() {
   return (
     <>
-      <Link to="/" className="flex-1 text-blue-500 text-center py-4">
+      <Link to="/" className="flex-1 py-4 text-center text-blue-500">
         Active Notes
       </Link>
-      <Link to="/archived" className="flex-1 text-center py-4">
+      <Link to="/archived" className="flex-1 py-4 text-center">
         Archived Notes
       </Link>
     </>
@@ -28,10 +28,10 @@ function ActiveNavLinks() {
 function ArchivedNavLinks() {
   return (
     <>
-      <Link to="/" className="flex-1 text-center py-4">
+      <Link to="/" className="flex-1 py-4 text-center">
         Active Notes
       </Link>
-      <Link to="/archived" className="flex-1 text-blue-500 text-center py-4">
+      <Link to="/archived" className="flex-1 py-4 text-center text-blue-500">
         Archived Notes
       </Link>
     </>

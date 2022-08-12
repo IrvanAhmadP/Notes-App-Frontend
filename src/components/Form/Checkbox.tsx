@@ -15,7 +15,7 @@ function Checkbox({ id, checked, label, handleChange }: CheckboxProps) {
         onChange={handleChange}
       />
       <label
-        className="flex-grow font-semibold ml-1 mb-1 text-gray-500"
+        className="ml-1 mb-1 flex-grow font-semibold text-gray-500"
         htmlFor={id}
       >
         {label}

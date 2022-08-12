@@ -19,14 +19,14 @@ function Header() {
     <header className="bg-slate-800 py-4 text-white">
       <Container>
         <div className="flex justify-between">
-          <h1 className="text-3xl font-semibold flex-grow">
+          <h1 className="flex-grow text-3xl font-semibold">
             <Link to="/">Notes</Link>
           </h1>
 
           <div className="flex">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="text-white mt-3 ml-3 absolute hover:text-gray-400 h-4 w-4"
+              className="absolute mt-3 ml-3 h-4 w-4 text-white hover:text-gray-400"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -38,7 +38,7 @@ function Header() {
             </svg>
 
             <input
-              className="bg-inherit h-10 pl-9 pr-4 outline-none border border-slate-500 bg-slate-700 rounded-md placeholder:text-gray-200"
+              className="h-10 rounded-md border border-slate-500 bg-inherit bg-slate-700 pl-9 pr-4 outline-none placeholder:text-gray-200"
               placeholder="Search"
               ref={searchRef}
               value={state.search}
@@ -54,7 +54,7 @@ function Header() {
               <button className="relative" onClick={handleResetSearch}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 absolute -ml-6 -mt-2"
+                  className="absolute -ml-6 -mt-2 h-4 w-4"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >

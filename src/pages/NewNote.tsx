@@ -66,7 +66,7 @@ function NewNote() {
       <Header />
       <main className="pb-[56px] md:pb-[90px]">
         <Container>
-          <h2 className="text-xl capitalize font-semibold pt-2">New Note</h2>
+          <h2 className="pt-2 text-xl font-semibold capitalize">New Note</h2>
           <Input
             label="Title"
             error={note.titleError}
@@ -88,7 +88,7 @@ function NewNote() {
               setNote({ ...note, archived: e.target.checked });
             }}
           />
-          <div className="my-2 grid grid-cols-2 w-56 float-right gap-2">
+          <div className="float-right my-2 grid w-56 grid-cols-2 gap-2">
             <SimpleButton
               color="bg-red-400 text-white"
               handleClick={handleResetNote}

@@ -71,7 +71,7 @@ function Notes({ page }: NotesProps) {
       <Header />
       <main className="pb-[56px] md:pb-[90px]">
         <Container>
-          <h2 className="text-xl capitalize font-semibold py-2">
+          <h2 className="py-2 text-xl font-semibold capitalize">
             {page} Notes
           </h2>
           {state.search !== "" && (
@@ -82,7 +82,7 @@ function Notes({ page }: NotesProps) {
 
           <div className="first:rounded-lg first:bg-red-100">
             {filteredNotes.length === 0 ? (
-              <div className="flex h-[calc(100vh_-_128px_-_57px)] md:h-[calc(100vh_-_162px_-_57px)] items-center justify-center">
+              <div className="flex h-[calc(100vh_-_128px_-_57px)] items-center justify-center md:h-[calc(100vh_-_162px_-_57px)]">
                 <p className="font-semibold">
                   Data not found,{" "}
                   <Link className="text-blue-500" to="/">
@@ -107,7 +107,7 @@ function Notes({ page }: NotesProps) {
             Are you sure want to delete{" "}
             <span className="font-semibold">{modalData.noteTitle}</span>?
           </p>
-          <div className="grid text-white grid-cols-2 w-56 float-right gap-2">
+          <div className="float-right grid w-56 grid-cols-2 gap-2 text-white">
             <SimpleButton
               color="bg-gray-300"
               classes="text-black"

@@ -34,7 +34,7 @@ function EditNote() {
 
 function NoteNotFound() {
   return (
-    <div className="flex h-[calc(100vh_-_128px)] md:h-[calc(100vh_-_162px)] items-center justify-center">
+    <div className="flex h-[calc(100vh_-_128px)] items-center justify-center md:h-[calc(100vh_-_162px)]">
       <p className="font-semibold">
         Note not found, return to{" "}
         <Link className="text-blue-500" to="/">
@@ -105,7 +105,7 @@ function EditNoteContent({ selectedNote, dispatch }: EditNoteContentProps) {
 
   return (
     <>
-      <h2 className="text-xl capitalize font-semibold pt-2">New Note</h2>
+      <h2 className="pt-2 text-xl font-semibold capitalize">New Note</h2>
       <Input
         label="Title"
         error={note.titleError}
@@ -127,7 +127,7 @@ function EditNoteContent({ selectedNote, dispatch }: EditNoteContentProps) {
           setNote({ ...note, archived: e.target.checked });
         }}
       />
-      <div className="my-2 grid grid-cols-2 w-56 float-right gap-2">
+      <div className="float-right my-2 grid w-56 grid-cols-2 gap-2">
         <SimpleButton
           color="bg-red-400 text-white"
           handleClick={handleResetNote}

@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 function NewNoteButton() {
   return (
     <Link to="/new-note">
-      <button className="fixed bottom-[72px] z-10 right-4 bg-blue-500 hover:bg-blue-600 h-12 w-12 text-white rounded-full">
+      <button className="fixed bottom-[72px] right-4 z-10 h-12 w-12 rounded-full bg-blue-500 text-white hover:bg-blue-600">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 m-auto"
+          className="m-auto h-6 w-6"
           viewBox="0 0 20 20"
           fill="currentColor"
         >

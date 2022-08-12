@@ -8,7 +8,7 @@ type ContainerProps = {
 function Container({ padding = "default", children }: ContainerProps) {
   const paddingClass = padding === "default" ? "px-4" : "";
   return (
-    <div className={`max-w-screen-lg m-auto ${paddingClass}`}>{children}</div>
+    <div className={`m-auto max-w-screen-lg ${paddingClass}`}>{children}</div>
   );
 }
 

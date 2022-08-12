@@ -17,8 +17,8 @@ function Modal({ title, children, isOpen, onClose }: ModalProps) {
           aria-hidden="true"
         />
 
-        <Dialog.Panel className="relative w-full max-w-screen-sm rounded bg-white m-auto p-4">
-          <Dialog.Title className="text-xl font-semibold text-red-500 mb-2">
+        <Dialog.Panel className="relative m-auto w-full max-w-screen-sm rounded bg-white p-4">
+          <Dialog.Title className="mb-2 text-xl font-semibold text-red-500">
             {title}
           </Dialog.Title>
 
