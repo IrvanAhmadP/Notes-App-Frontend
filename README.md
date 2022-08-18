@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+# Notes App - Frontend
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+### Screenshot
+
+![Screenshot Notes App - Frontend](https://raw.githubusercontent.com/IrvanAhmadP/Notes-App-Frontend/master/images/Screenshot%20Notes-App-Frontend.webp)
 
 ## Available Scripts
 
