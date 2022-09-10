@@ -1,7 +1,7 @@
+import { useRef } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Container } from "src/components";
 import { ACTIONS, useAppContext } from "src/contexts/appContext";
-import { Link } from "react-router-dom";
-import { useRef } from "react";
 
 function Header() {
   const { state, dispatch } = useAppContext();
