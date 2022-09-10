@@ -61,7 +61,7 @@ function EditNoteContent({ selectedNote, dispatch }: EditNoteContentProps) {
   const [note, setNote] = useState({
     ...selectedNote,
     titleError: "",
-    disabledSaveButton: true,
+    disabledSaveButton: false,
   });
 
   const handleChangeTitle = (e: any) => {
@@ -105,7 +105,7 @@ function EditNoteContent({ selectedNote, dispatch }: EditNoteContentProps) {
 
   return (
     <>
-      <h2 className="pt-2 text-xl font-semibold capitalize">New Note</h2>
+      <h2 className="pt-2 text-xl font-semibold capitalize">Edit Note</h2>
       <Input
         label="Title"
         error={note.titleError}
