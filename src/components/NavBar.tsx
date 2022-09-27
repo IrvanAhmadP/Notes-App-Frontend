@@ -6,32 +6,29 @@ type NavBarProps = {
 
 function NavBar({ page }: NavBarProps) {
   return (
-    <nav className="fixed bottom-0 z-10 flex w-full divide-x border-t border-gray-300 bg-white font-semibold">
-      {page === "active" ? <ActiveNavLinks /> : <ArchivedNavLinks />}
+    <nav className="fixed bottom-0 z-10 flex w-full divide-x border-t border-gray-300 bg-white text-center font-semibold">
+      {<NavLinks open={page} />}
     </nav>
   );
 }
 
-function ActiveNavLinks() {
-  return (
-    <>
-      <Link to="/" className="flex-1 py-4 text-center text-blue-500">
-        Active Notes
-      </Link>
-      <Link to="/archived" className="flex-1 py-4 text-center">
-        Archived Notes
-      </Link>
-    </>
-  );
-}
+type NavLinksProps = {
+  open: "active" | "archived";
+};
 
-function ArchivedNavLinks() {
+function NavLinks({ open }: NavLinksProps) {
   return (
     <>
-      <Link to="/" className="flex-1 py-4 text-center">
+      <Link
+        to="/"
+        className={`${open === "active" ? "text-cyan-500" : ""} flex-1 py-4`}
+      >
         Active Notes
       </Link>
-      <Link to="/archived" className="flex-1 py-4 text-center text-blue-500">
+      <Link
+        to="/archived"
+        className={`${open === "archived" ? "text-cyan-500" : ""} flex-1 py-4`}
+      >
         Archived Notes
       </Link>
     </>
