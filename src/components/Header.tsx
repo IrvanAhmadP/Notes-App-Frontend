@@ -1,11 +1,33 @@
-import { useRef } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { FormEvent, useRef } from "react";
+import {
+  createSearchParams,
+  Link,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { Container } from "src/components";
 import { ACTIONS, useAppContext } from "src/contexts/appContext";
 
 function Header() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { state, dispatch } = useAppContext();
   const searchRef = useRef<HTMLInputElement>(null);
+
+  const keyword = searchParams.get("keyword");
+
+  const handleSearch = (e: FormEvent<HTMLInputElement>) => {
+    const keyword = e.currentTarget.value;
+    navigate({
+      pathname: "/search",
+      search: createSearchParams({ keyword }).toString(),
+    });
+
+    dispatch({
+      type: ACTIONS.SEARCH,
+      payload: { search: keyword },
+    });
+  };
 
   const handleResetSearch = () => {
     dispatch({ type: ACTIONS.RESERT_SEARCH });
@@ -42,12 +64,7 @@ function Header() {
               placeholder="Search"
               ref={searchRef}
               value={state.search}
-              onChange={(e) =>
-                dispatch({
-                  type: ACTIONS.SEARCH,
-                  payload: { search: e.target.value },
-                })
-              }
+              onChange={handleSearch}
             />
 
             {state.search !== "" && (

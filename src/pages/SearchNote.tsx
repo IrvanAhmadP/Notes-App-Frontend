@@ -1,22 +1,22 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { ACTIONS, useAppContext } from "src/contexts/appContext";
 import {
   Header,
-  Modal,
   Container,
   Note,
+  Modal,
+  SimpleButton,
   NewNoteButton,
   NavBar,
-  SimpleButton,
 } from "src/components";
-import { ACTIONS, useAppContext } from "src/contexts/appContext";
 
-type NotesProps = {
-  page: "active" | "archived";
-};
-
-function Notes({ page }: NotesProps) {
+function SearchNotes() {
   const { state, dispatch } = useAppContext();
+  const [searchParams] = useSearchParams();
+
+  const keyword = searchParams.get("keyword");
+
   const [modalData, setModalData] = useState<{
     id: number | undefined;
     isOpen: boolean;
@@ -30,10 +30,9 @@ function Notes({ page }: NotesProps) {
   });
 
   const filteredNotes = state.notes.filter((note) => {
-    if (page === "active" && note.archived === false) {
-      return true;
-    } else if (page === "archived" && note.archived === true) {
-      return true;
+    let searchMatch = true;
+    if (keyword !== "") {
+      searchMatch = note.title.toLowerCase().search(state.search) !== -1;
     }
 
     return false;
@@ -67,8 +66,13 @@ function Notes({ page }: NotesProps) {
       <main className="pb-[56px] md:pb-[90px]">
         <Container>
           <h2 className="py-2 text-xl font-semibold capitalize">
-            {page} Notes
+            {/* {page} Notes */}
           </h2>
+          {state.search !== "" && (
+            <p className="mb-2 font-semibold text-gray-500">
+              {filteredNotes.length} results for "{state.search}"
+            </p>
+          )}
 
           <div className="first:rounded-lg first:bg-red-100">
             {filteredNotes.length === 0 ? (
@@ -112,10 +116,10 @@ function Notes({ page }: NotesProps) {
         </Modal>
 
         <NewNoteButton />
-        <NavBar page={page} />
+        <NavBar page="search" />
       </main>
     </div>
   );
 }
 
-export default Notes;
+export default SearchNotes;
