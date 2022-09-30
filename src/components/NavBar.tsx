@@ -17,13 +17,13 @@ function NavLinks({ page }: NavBarProps) {
     <>
       <Link
         to="/"
-        className={`${page === "active" ? "text-cyan-500" : ""} flex-1 py-4`}
+        className={`${page === "active" ? "text-cyan-700" : ""} flex-1 py-4`}
       >
         Active Notes
       </Link>
       <Link
         to="/archived"
-        className={`${page === "archived" ? "text-cyan-500" : ""} flex-1 py-4`}
+        className={`${page === "archived" ? "text-cyan-700" : ""} flex-1 py-4`}
       >
         Archived Notes
       </Link>
