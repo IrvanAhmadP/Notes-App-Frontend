@@ -16,6 +16,12 @@ function Header() {
 
   const keyword = searchParams.get("keyword");
 
+  const handleFocusSearchRef = () => {
+    if (null !== searchRef.current) {
+      searchRef.current.focus();
+    }
+  };
+
   const handleSearch = (e: FormEvent<HTMLInputElement>) => {
     const keyword = e.currentTarget.value;
     navigate({
@@ -27,14 +33,14 @@ function Header() {
       type: ACTIONS.SEARCH,
       payload: { search: keyword },
     });
+
+    handleFocusSearchRef();
   };
 
   const handleResetSearch = () => {
     dispatch({ type: ACTIONS.RESERT_SEARCH });
 
-    if (null !== searchRef.current) {
-      searchRef.current.focus();
-    }
+    handleFocusSearchRef();
   };
 
   return (
