@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { ACTIONS, useAppContext } from "src/contexts/appContext";
-import { Modal, SimpleButton, Note } from "src/components";
+import { DataNotFound, Modal, SimpleButton, Note } from "src/components";
 
 type NotesContainerProps = {
   notes: any;
@@ -47,15 +46,7 @@ function NotesContainer({ notes }: NotesContainerProps) {
     <>
       <div className="first:rounded-lg">
         {notes.length === 0 ? (
-          <div className="flex h-[calc(100vh_-_128px_-_57px)] items-center justify-center md:h-[calc(100vh_-_162px_-_57px)]">
-            <p className="font-semibold">
-              Data not found,{" "}
-              <Link className="text-blue-500" to="/new-note">
-                create a note
-              </Link>
-              .
-            </p>
-          </div>
+          <DataNotFound />
         ) : (
           notes.map((note: any) => (
             <Note
