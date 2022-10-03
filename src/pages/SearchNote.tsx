@@ -1,6 +1,12 @@
 import { useSearchParams } from "react-router-dom";
 import { useAppContext } from "src/contexts/appContext";
-import { Header, Container, NewNoteButton, NavBar } from "src/components";
+import {
+  Header,
+  Container,
+  NewNoteButton,
+  NavBar,
+  DataNotFound,
+} from "src/components";
 import NotesContainer from "src/components/NotesContainer";
 
 function SearchNotes() {
@@ -28,21 +34,29 @@ function SearchNotes() {
       <Header />
       <main className="pb-[56px] md:pb-[90px]">
         <Container>
-          {state.search !== "" && (
-            <p className="my-2 font-semibold text-gray-500">
-              {matchNotes.length} results for "{state.search}"
-            </p>
+          <p className="my-2 font-semibold text-gray-500">
+            {matchNotes.length} results for "{state.search}"
+          </p>
+
+          {matchNotes.length === 0 && <DataNotFound />}
+
+          {activeNotesMatch.length > 0 && (
+            <>
+              <h2 className="py-2 text-xl font-semibold capitalize">
+                Active Notes
+              </h2>
+              <NotesContainer notes={activeNotesMatch} />
+            </>
           )}
 
-          <h2 className="py-2 text-xl font-semibold capitalize">
-            Active Notes
-          </h2>
-          <NotesContainer notes={activeNotesMatch} />
-
-          <h2 className="py-2 text-xl font-semibold capitalize">
-            Archived Notes
-          </h2>
-          <NotesContainer notes={archivedNotesMatch} />
+          {archivedNotesMatch.length > 0 && (
+            <>
+              <h2 className="py-2 text-xl font-semibold capitalize">
+                Archived Notes
+              </h2>
+              <NotesContainer notes={archivedNotesMatch} />
+            </>
+          )}
         </Container>
 
         <NewNoteButton />
