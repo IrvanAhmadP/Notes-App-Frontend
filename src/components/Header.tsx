@@ -1,7 +1,8 @@
-import { FormEvent, useRef } from "react";
+import { FormEvent, useEffect, useRef } from "react";
 import {
   createSearchParams,
   Link,
+  useLocation,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
@@ -9,12 +10,19 @@ import { Container } from "src/components";
 import { ACTIONS, useAppContext } from "src/contexts/appContext";
 
 function Header() {
+  const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { state, dispatch } = useAppContext();
   const searchRef = useRef<HTMLInputElement>(null);
 
   const keyword = searchParams.get("keyword");
+
+  useEffect(() => {
+    if (location.pathname === "/search") {
+      handleFocusSearchRef();
+    }
+  }, []);
 
   const handleFocusSearchRef = () => {
     if (null !== searchRef.current) {
@@ -33,8 +41,6 @@ function Header() {
       type: ACTIONS.SEARCH,
       payload: { search: keyword },
     });
-
-    handleFocusSearchRef();
   };
 
   const handleResetSearch = () => {

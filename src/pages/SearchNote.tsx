@@ -16,9 +16,8 @@ function SearchNotes() {
   const keyword = searchParams.get("keyword");
 
   const matchNotes = state.notes.filter((note) => {
-    let searchMatch = true;
-    if (keyword !== "" && keyword !== null) {
-      searchMatch = note.title.toLowerCase().search(keyword) !== -1;
+    if (keyword !== null) {
+      return note.title.toLowerCase().search(keyword.toLowerCase()) !== -1;
     }
 
     return false;
