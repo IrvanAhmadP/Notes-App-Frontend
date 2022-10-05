@@ -1,4 +1,3 @@
-import { useSearchParams } from "react-router-dom";
 import { useAppContext } from "src/contexts/appContext";
 import {
   Header,
@@ -11,13 +10,10 @@ import NotesContainer from "src/components/NotesContainer";
 
 function SearchNotes() {
   const { state } = useAppContext();
-  const [searchParams] = useSearchParams();
-
-  const keyword = searchParams.get("keyword");
 
   const matchNotes = state.notes.filter((note) => {
-    if (keyword !== null) {
-      return note.title.toLowerCase().search(keyword.toLowerCase()) !== -1;
+    if (state.search !== "") {
+      return note.title.toLowerCase().search(state.search.toLowerCase()) !== -1;
     }
 
     return false;

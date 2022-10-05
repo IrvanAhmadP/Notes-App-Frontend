@@ -16,12 +16,20 @@ function Header() {
   const { state, dispatch } = useAppContext();
   const searchRef = useRef<HTMLInputElement>(null);
 
-  const keyword = searchParams.get("keyword");
+  let keyword = searchParams.get("keyword");
+  if (keyword === null) {
+    keyword = "";
+  }
 
   useEffect(() => {
     if (location.pathname === "/search") {
       handleFocusSearchRef();
     }
+
+    dispatch({
+      type: ACTIONS.SEARCH,
+      payload: { search: keyword },
+    });
   }, []);
 
   const handleFocusSearchRef = () => {
