@@ -24,12 +24,12 @@ function Header() {
   useEffect(() => {
     if (location.pathname === "/search") {
       handleFocusSearchRef();
-    }
 
-    dispatch({
-      type: ACTIONS.SEARCH,
-      payload: { search: keyword },
-    });
+      dispatch({
+        type: ACTIONS.SEARCH,
+        payload: { search: keyword },
+      });
+    }
   }, []);
 
   const handleFocusSearchRef = () => {
