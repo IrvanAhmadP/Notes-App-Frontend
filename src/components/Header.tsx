@@ -61,9 +61,9 @@ function Header() {
     <header className="bg-slate-800 py-4 text-white">
       <Container>
         <div className="flex justify-between">
-          <h1 className="flex-grow text-3xl font-semibold">
+          <h3 className="flex-grow text-3xl font-semibold">
             <Link to="/">Notes</Link>
-          </h1>
+          </h3>
 
           <div className="flex">
             <svg
