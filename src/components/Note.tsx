@@ -24,7 +24,9 @@ function Note({
 
   return (
     <div className="-mx-4 border-b border-gray-300 bg-white p-4 sm:mx-0 md:first:rounded-t-lg md:last:rounded-b-lg">
-      <p className="text-lg font-semibold">{title}</p>
+      <Link to={`/note/${id}`}>
+        <p className="text-lg font-semibold">{title}</p>
+      </Link>
       <span className="font-semibold text-gray-400">
         {showFormattedDate(createdAt)}
       </span>

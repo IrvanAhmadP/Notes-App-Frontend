@@ -1,5 +1,6 @@
 import { useAppContext } from "src/contexts/appContext";
 import {
+  Main,
   Header,
   Container,
   NewNoteButton,
@@ -27,7 +28,7 @@ function SearchNotes() {
   return (
     <div className="App">
       <Header />
-      <main className="pb-[56px] md:pb-[90px]">
+      <Main>
         <Container>
           <p className="my-2 font-semibold text-gray-500">
             {matchNotes.length} results for "{state.search}"
@@ -56,7 +57,7 @@ function SearchNotes() {
 
         <NewNoteButton />
         <NavBar page="search" />
-      </main>
+      </Main>
     </div>
   );
 }

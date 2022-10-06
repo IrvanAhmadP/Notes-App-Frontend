@@ -1,4 +1,4 @@
-import { Header, Container, NewNoteButton, NavBar } from "src/components";
+import { Main, Header, Container, NewNoteButton, NavBar } from "src/components";
 import NotesContainer from "src/components/NotesContainer";
 import { useAppContext } from "src/contexts/appContext";
 
@@ -21,7 +21,7 @@ function Notes({ page }: NotesProps) {
   return (
     <div className="App">
       <Header />
-      <main className="pb-[56px] md:pb-[90px]">
+      <Main>
         <Container>
           <h2 className="py-2 text-xl font-semibold capitalize">
             {page} Notes
@@ -32,7 +32,7 @@ function Notes({ page }: NotesProps) {
 
         <NewNoteButton />
         <NavBar page={page} />
-      </main>
+      </Main>
     </div>
   );
 }

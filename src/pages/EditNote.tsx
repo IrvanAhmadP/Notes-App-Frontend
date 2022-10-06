@@ -1,6 +1,7 @@
 import { useState, Dispatch } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
+  Main,
   Header,
   Container,
   Checkbox,
@@ -19,7 +20,7 @@ function EditNote() {
   return (
     <div className="App">
       <Header />
-      <main className="pb-[56px] md:pb-[90px]">
+      <Main>
         <Container>
           {selectedNote === undefined ? (
             <NoteNotFound />
@@ -27,7 +28,7 @@ function EditNote() {
             <EditNoteContent selectedNote={selectedNote} dispatch={dispatch} />
           )}
         </Container>
-      </main>
+      </Main>
     </div>
   );
 }

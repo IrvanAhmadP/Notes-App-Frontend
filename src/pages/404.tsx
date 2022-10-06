@@ -1,10 +1,10 @@
-import { Header, Container } from "src/components";
+import { Main, Header, Container } from "src/components";
 
 function NotFound() {
   return (
     <div className="App">
       <Header />
-      <main className="pb-[56px]">
+      <Main>
         <Container>
           <div className="flex h-[calc(100vh_-_150px)]">
             <img
@@ -14,7 +14,7 @@ function NotFound() {
             />
           </div>
         </Container>
-      </main>
+      </Main>
     </div>
   );
 }

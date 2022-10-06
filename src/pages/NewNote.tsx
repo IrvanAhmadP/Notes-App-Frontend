@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  Main,
   Header,
   Container,
   Checkbox,
@@ -64,7 +65,7 @@ function NewNote() {
   return (
     <div className="App">
       <Header />
-      <main className="pb-[56px] md:pb-[90px]">
+      <Main>
         <Container>
           <h2 className="pt-2 text-xl font-semibold capitalize">New Note</h2>
           <Input
@@ -104,7 +105,7 @@ function NewNote() {
             </SimpleButton>
           </div>
         </Container>
-      </main>
+      </Main>
     </div>
   );
 }
