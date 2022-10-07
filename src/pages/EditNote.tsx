@@ -1,9 +1,10 @@
 import { useState, Dispatch } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Main,
   Header,
   Container,
+  NoteNotFound,
   Checkbox,
   Input,
   Textarea,
@@ -29,20 +30,6 @@ function EditNote() {
           )}
         </Container>
       </Main>
-    </div>
-  );
-}
-
-function NoteNotFound() {
-  return (
-    <div className="flex h-[calc(100vh_-_128px)] items-center justify-center md:h-[calc(100vh_-_162px)]">
-      <p className="font-semibold">
-        Note not found, return to{" "}
-        <Link className="text-blue-500" to="/">
-          homepage
-        </Link>
-        .
-      </p>
     </div>
   );
 }
