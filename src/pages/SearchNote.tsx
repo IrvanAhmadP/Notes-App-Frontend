@@ -13,11 +13,7 @@ function SearchNotes() {
   const { state } = useAppContext();
 
   const matchNotes = state.notes.filter((note) => {
-    if (state.search !== "") {
-      return note.title.toLowerCase().search(state.search.toLowerCase()) !== -1;
-    }
-
-    return false;
+    return note.title.toLowerCase().search(state.search.toLowerCase()) !== -1;
   });
 
   const activeNotesMatch = matchNotes.filter((note) => note.archived === false);
