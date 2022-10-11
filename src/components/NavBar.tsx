@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Proptypes from "prop-types";
 
 type NavBarProps = {
   page: "active" | "archived" | "search";
@@ -30,5 +31,13 @@ function NavLinks({ page }: NavBarProps) {
     </>
   );
 }
+
+NavBar.prototype = {
+  page: Proptypes.oneOf(["active", "archived", "search"]).isRequired,
+};
+
+NavLinks.prototype = {
+  page: Proptypes.oneOf(["active", "archived", "search"]).isRequired,
+};
 
 export default NavBar;

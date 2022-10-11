@@ -1,3 +1,5 @@
+import Proptypes from "prop-types";
+
 type TextareaProps = {
   label: string;
   placeholder: string;
@@ -19,5 +21,12 @@ function Textarea({ label, placeholder, value, handleChange }: TextareaProps) {
     </div>
   );
 }
+
+Textarea.prototype = {
+  label: Proptypes.string.isRequired,
+  placeholder: Proptypes.string.isRequired,
+  value: Proptypes.string,
+  handleChange: Proptypes.func,
+};
 
 export default Textarea;

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Proptypes from "prop-types";
 
 type SimpleButtonProps = {
   disabled?: boolean;
@@ -25,5 +26,13 @@ function SimpleButton({
     </button>
   );
 }
+
+SimpleButton.prototype = {
+  disabled: Proptypes.bool,
+  color: Proptypes.string.isRequired,
+  classes: Proptypes.string,
+  children: Proptypes.node,
+  handleClick: Proptypes.func,
+};
 
 export default SimpleButton;

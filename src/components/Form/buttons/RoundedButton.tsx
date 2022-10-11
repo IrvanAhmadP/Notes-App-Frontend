@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Proptypes from "prop-types";
 
 type RoundedButtonProps = {
   classes?: string;
@@ -22,5 +23,12 @@ function RoundedButton({
     </button>
   );
 }
+
+RoundedButton.prototype = {
+  classes: Proptypes.string,
+  color: Proptypes.string,
+  handleClick: Proptypes.func,
+  children: Proptypes.node.isRequired,
+};
 
 export default RoundedButton;

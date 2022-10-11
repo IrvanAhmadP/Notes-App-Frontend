@@ -1,3 +1,5 @@
+import Proptypes from "prop-types";
+
 type CheckboxProps = {
   id: string;
   checked: boolean | undefined;
@@ -23,5 +25,12 @@ function Checkbox({ id, checked, label, handleChange }: CheckboxProps) {
     </div>
   );
 }
+
+Checkbox.prototype = {
+  id: Proptypes.string.isRequired,
+  checked: Proptypes.bool.isRequired,
+  label: Proptypes.string.isRequired,
+  handleChaner: Proptypes.func,
+};
 
 export default Checkbox;

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Proptypes from "prop-types";
 import { Dialog } from "@headlessui/react";
 
 type ModalProps = {
@@ -28,5 +29,12 @@ function Modal({ title, children, isOpen, onClose }: ModalProps) {
     </Dialog>
   );
 }
+
+Modal.prototype = {
+  title: Proptypes.string,
+  children: Proptypes.node.isRequired,
+  isOpen: Proptypes.bool.isRequired,
+  onClose: Proptypes.func,
+};
 
 export default Modal;

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import PropTypes from "prop-types";
 
 type ContainerProps = {
   padding?: "default" | "mobile-px-0";
@@ -11,5 +12,10 @@ function Container({ padding = "default", children }: ContainerProps) {
     <div className={`m-auto max-w-screen-lg ${paddingClass}`}>{children}</div>
   );
 }
+
+Container.prototype = {
+  padding: PropTypes.oneOf(["default", "mobile-px-0"]),
+  children: PropTypes.node,
+};
 
 export default Container;

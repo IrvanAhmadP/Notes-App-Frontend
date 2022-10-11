@@ -1,3 +1,5 @@
+import Proptypes from "prop-types";
+
 type InputProps = {
   label: string;
   error?: string;
@@ -20,5 +22,12 @@ function Input({ label, error, placeholder, value, handleChange }: InputProps) {
     </div>
   );
 }
+
+Input.prototype = {
+  label: Proptypes.string.isRequired,
+  error: Proptypes.string,
+  placeholder: Proptypes.string.isRequired,
+  handleChange: Proptypes.func,
+};
 
 export default Input;

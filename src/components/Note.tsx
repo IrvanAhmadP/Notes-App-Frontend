@@ -1,7 +1,8 @@
+import Proptypes from "prop-types";
+import { Link } from "react-router-dom";
 import { SimpleButton } from "src/components";
 import { showFormattedDate } from "src/utils/index";
 import { ACTIONS, useAppContext } from "src/contexts/appContext";
-import { Link } from "react-router-dom";
 
 type NoteProps = {
   id: number;
@@ -69,5 +70,14 @@ function Note({
     </div>
   );
 }
+
+Note.prototype = {
+  id: Proptypes.number.isRequired,
+  title: Proptypes.string.isRequired,
+  body: Proptypes.string.isRequired,
+  archived: Proptypes.bool.isRequired,
+  createdAt: Proptypes.string.isRequired,
+  handleOpenModalDeleteNote: Proptypes.func.isRequired,
+};
 
 export default Note;

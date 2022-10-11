@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Proptypes from "prop-types";
 import { ACTIONS, useAppContext } from "src/contexts/appContext";
 import { DataNotFound, Modal, SimpleButton, Note } from "src/components";
 
@@ -7,7 +8,7 @@ type NotesContainerProps = {
 };
 
 function NotesContainer({ notes }: NotesContainerProps) {
-  const { state, dispatch } = useAppContext();
+  const { dispatch } = useAppContext();
   const [modalData, setModalData] = useState<{
     id: number | undefined;
     isOpen: boolean;
@@ -79,5 +80,9 @@ function NotesContainer({ notes }: NotesContainerProps) {
     </>
   );
 }
+
+NotesContainer.prototype = {
+  notes: Proptypes.array,
+};
 
 export default NotesContainer;
