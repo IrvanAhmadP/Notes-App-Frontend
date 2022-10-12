@@ -9,11 +9,14 @@ import NotFound from "src/pages/404";
 import SearchNotes from "./pages/SearchNote";
 
 function App() {
+  const activeNotes = <Notes page="active" />;
+  const archivedNotes = <Notes page="archived" />;
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Notes page="active" />} />
-        <Route path="archived" element={<Notes page="archived" />} />
+        <Route index element={activeNotes} />
+        <Route path="archived" element={archivedNotes} />
         <Route path="new-note" element={<NewNote />} />
         <Route path="note/:id" element={<Note />} />
         <Route path="edit/:id" element={<EditNote />} />
