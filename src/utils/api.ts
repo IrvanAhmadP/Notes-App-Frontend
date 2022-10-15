@@ -4,11 +4,11 @@ function getAccessToken() {
   return localStorage.getItem("accessToken");
 }
 
-function putAccessToken(accessToken) {
+function putAccessToken(accessToken: string) {
   return localStorage.setItem("accessToken", accessToken);
 }
 
-async function fetchWithToken(url, options = {}) {
+async function fetchWithToken(url: string, options: any = {}) {
   return fetch(url, {
     ...options,
     headers: {
@@ -18,7 +18,12 @@ async function fetchWithToken(url, options = {}) {
   });
 }
 
-async function login({ email, password }) {
+type loginProps = {
+  email: string;
+  password: string;
+};
+
+async function login({ email, password }: loginProps) {
   const response = await fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: {
@@ -37,7 +42,13 @@ async function login({ email, password }) {
   return { error: false, data: responseJson.data };
 }
 
-async function register({ name, email, password }) {
+type registerProps = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+async function register({ name, email, password }: registerProps) {
   const response = await fetch(`${BASE_URL}/register`, {
     method: "POST",
     headers: {
@@ -67,7 +78,12 @@ async function getUserLogged() {
   return { error: false, data: responseJson.data };
 }
 
-async function addNote({ title, body }) {
+type addNoteProps = {
+  title: string;
+  body: string;
+};
+
+async function addNote({ title, body }: addNoteProps) {
   const response = await fetchWithToken(`${BASE_URL}/notes`, {
     method: "POST",
     headers: {
@@ -107,7 +123,7 @@ async function getArchivedNotes() {
   return { error: false, data: responseJson.data };
 }
 
-async function getNote(id) {
+async function getNote(id: string | number) {
   const response = await fetchWithToken(`${BASE_URL}/notes/${id}`);
   const responseJson = await response.json();
 
@@ -118,7 +134,7 @@ async function getNote(id) {
   return { error: false, data: responseJson.data };
 }
 
-async function archiveNote(id) {
+async function archiveNote(id: string | number) {
   const response = await fetchWithToken(`${BASE_URL}/notes/${id}/archive`, {
     method: "POST",
   });
@@ -132,7 +148,7 @@ async function archiveNote(id) {
   return { error: false, data: responseJson.data };
 }
 
-async function unarchiveNote(id) {
+async function unarchiveNote(id: string | number) {
   const response = await fetchWithToken(`${BASE_URL}/notes/${id}/unarchive`, {
     method: "POST",
   });
@@ -146,7 +162,7 @@ async function unarchiveNote(id) {
   return { error: false, data: responseJson.data };
 }
 
-async function deleteNote(id) {
+async function deleteNote(id: string | number) {
   const response = await fetchWithToken(`${BASE_URL}/notes/${id}`, {
     method: "DELETE",
   });
