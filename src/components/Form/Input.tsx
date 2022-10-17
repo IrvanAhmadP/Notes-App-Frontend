@@ -1,22 +1,31 @@
 import Proptypes from "prop-types";
 
 type InputProps = {
+  type?: string;
   label: string;
   error?: string;
   placeholder: string;
   value: string | undefined;
-  handleChange: (e: any) => void;
+  handleChange: any;
 };
 
-function Input({ label, error, placeholder, value, handleChange }: InputProps) {
+function Input({
+  type = "text",
+  label,
+  error,
+  placeholder,
+  value,
+  handleChange,
+}: InputProps) {
   return (
     <div className="my-2">
       <label className="mb-1 block font-semibold text-gray-500">{label}</label>
       <input
-        className="w-full rounded p-2 outline-none ring-inset focus:ring-2"
+        type={type}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
+        className="w-full rounded p-2 outline-none ring-inset focus:ring-2"
       />
       <span className="text-sm font-bold text-red-400">{error}</span>
     </div>
