@@ -19,7 +19,10 @@ function SimpleButton({
   return (
     <button
       disabled={disabled}
-      className={`${color} ${classes} rounded p-1 disabled:cursor-not-allowed`}
+      className={`
+        ${color} 
+        ${classes ? classes : ""}
+        rounded p-1 disabled:cursor-not-allowed`}
       onClick={handleClick}
     >
       {children}
