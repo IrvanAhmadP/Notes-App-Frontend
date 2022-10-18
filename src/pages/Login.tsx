@@ -2,17 +2,11 @@ import { Link } from "react-router-dom";
 import AuthLayout from "src/layouts/AuthLayout";
 import { Hr, Input, SimpleButton } from "src/components";
 
-function Register() {
+function Login() {
   return (
     <AuthLayout>
       <div className="flex w-96 flex-col rounded-md p-8">
-        <h1 className="text-center text-2xl font-bold">Register</h1>
-        <Input
-          label="Name"
-          placeholder="Name"
-          value=""
-          handleChange={() => {}}
-        />
+        <h1 className="text-center text-2xl font-bold">Login</h1>
         <Input
           label="Email"
           placeholder="Email"
@@ -27,20 +21,20 @@ function Register() {
         />
 
         <SimpleButton
-          color="bg-green-500 hover:bg-green-600 text-white"
+          color="bg-blue-500 hover:bg-blue-600 text-white"
           classes="py-2 font-semibold mt-2"
         >
-          Register
+          Login
         </SimpleButton>
 
         <Hr classes="mt-3 mb-1" text="OR" />
 
-        <Link to="/login" className="w-full">
+        <Link to="/register" className="w-full">
           <SimpleButton
-            color="bg-blue-500 hover:bg-blue-600 text-white"
+            color="bg-green-500 hover:bg-green-600 text-white"
             classes="py-2 w-full font-semibold mt-2"
           >
-            Login
+            Register
           </SimpleButton>
         </Link>
       </div>
@@ -48,4 +42,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Login;
