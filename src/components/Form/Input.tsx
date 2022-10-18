@@ -19,13 +19,13 @@ function Input({
 }: InputProps) {
   return (
     <div className="my-2">
-      <label className="mb-1 block font-semibold text-gray-500">{label}</label>
+      <label className="mb-1 block font-semibold text-gray-600">{label}</label>
       <input
         type={type}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
-        className="w-full rounded p-2 outline-none ring-inset focus:ring-2"
+        className="w-full rounded border border-gray-300 bg-gray-100 p-2 outline-none ring-inset focus:ring-2"
       />
       <span className="text-sm font-bold text-red-400">{error}</span>
     </div>
