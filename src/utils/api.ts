@@ -35,8 +35,7 @@ async function login({ email, password }: loginProps) {
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
-    alert(responseJson.message);
-    return { error: true, data: null };
+    return { error: true, message: responseJson.message, data: null };
   }
 
   return { error: false, data: responseJson.data };
@@ -60,8 +59,7 @@ async function register({ name, email, password }: registerProps) {
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
-    alert(responseJson.message);
-    return { error: true };
+    return { error: true, message: responseJson.message };
   }
 
   return { error: false };
