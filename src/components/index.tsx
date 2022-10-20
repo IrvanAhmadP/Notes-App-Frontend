@@ -1,5 +1,6 @@
 import Header from "src/components/Header";
 import Hr from "src/components/Hr";
+import Loading from "src/components/Loading";
 import Main from "src/components/Main";
 import Modal from "src/components/Modal";
 import Container from "src/components/Container";
@@ -17,6 +18,7 @@ import NavBar from "src/components/NavBar";
 export {
   Header,
   Hr,
+  Loading,
   Main,
   Checkbox,
   Input,
