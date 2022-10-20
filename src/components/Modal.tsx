@@ -4,12 +4,13 @@ import { Dialog } from "@headlessui/react";
 
 type ModalProps = {
   title?: string;
+  titleColor?: string;
   children: ReactNode;
   isOpen: boolean;
   onClose: () => void;
 };
 
-function Modal({ title, children, isOpen, onClose }: ModalProps) {
+function Modal({ title, titleColor, children, isOpen, onClose }: ModalProps) {
   return (
     <Dialog open={isOpen} onClose={onClose}>
       <div className="fixed inset-0 z-20 flex items-center justify-center">
@@ -19,7 +20,11 @@ function Modal({ title, children, isOpen, onClose }: ModalProps) {
         />
 
         <Dialog.Panel className="relative m-auto w-full max-w-screen-sm rounded bg-white p-4">
-          <Dialog.Title className="mb-2 text-xl font-semibold text-red-500">
+          <Dialog.Title
+            className={`${
+              titleColor ? titleColor : ""
+            } mb-2 text-xl font-semibold`}
+          >
             {title}
           </Dialog.Title>
 
@@ -32,6 +37,7 @@ function Modal({ title, children, isOpen, onClose }: ModalProps) {
 
 Modal.prototype = {
   title: Proptypes.string,
+  titleColor: Proptypes.string,
   children: Proptypes.node.isRequired,
   isOpen: Proptypes.bool.isRequired,
   onClose: Proptypes.func,

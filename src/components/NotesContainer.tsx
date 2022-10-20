@@ -59,7 +59,11 @@ function NotesContainer({ notes }: NotesContainerProps) {
         )}
       </div>
 
-      <Modal {...modalData} onClose={handleCloseModal}>
+      <Modal
+        {...modalData}
+        titleColor="text-red-500"
+        onClose={handleCloseModal}
+      >
         <p>
           Are you sure want to delete{" "}
           <span className="font-semibold">{modalData.noteTitle}</span>?
