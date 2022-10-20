@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "src/layouts/AuthLayout";
-import { Hr, Input, SimpleButton } from "src/components";
 import useInput from "src/hooks/useInput";
 import { register } from "src/utils/api";
+import { Hr, Loading, Modal, Input, SimpleButton } from "src/components";
 
 function Register() {
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [name, handleNameChange] = useInput("");
   const [email, handleEmailChange] = useInput("");
   const [password, handlePasswordChange] = useInput("");
@@ -15,15 +18,32 @@ function Register() {
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setError("");
+    setIsLoading(true);
+
     if (password !== confirmPassword) {
       setError("Password and confirm password doesn't match");
+      setIsLoading(false);
       return;
     }
 
     const result = await register({ name, email, password });
     if (result.error === true) {
       setError(result.message);
+    } else {
+      toggleModal(true);
     }
+
+    setIsLoading(false);
+  };
+
+  const toggleModal = (value: boolean) => {
+    setIsModalOpen(value || !isModalOpen);
+  };
+
+  const handleCloseModal = () => {
+    toggleModal(false);
+    navigate("/login");
   };
 
   return (
@@ -33,38 +53,43 @@ function Register() {
         <form onSubmit={handleRegister}>
           <Input
             label="Name"
-            placeholder="Name"
+            name="name"
             value={name}
+            placeholder="Name"
             handleChange={handleNameChange}
           />
           <Input
             label="Email"
-            placeholder="Email"
+            name="email"
             value={email}
+            placeholder="Email"
             handleChange={handleEmailChange}
           />
           <Input
             label="Password"
             type="password"
-            placeholder="Password"
+            name="password"
             value={password}
+            placeholder="Password"
             handleChange={handlePasswordChange}
           />
 
           <Input
             label="Confirm Password"
             type="password"
-            placeholder="Confirm Password"
+            name="confirm_password"
             value={confirmPassword}
+            placeholder="Confirm Password"
             handleChange={handleConfirmPasswordChange}
           />
 
           <p className="text-sm text-red-500">{error}</p>
 
           <SimpleButton
-            classes="w-full py-2 font-semibold mt-2"
+            classes="mt-2 flex w-full py-2 justify-center font-semibold"
             color="bg-green-500 hover:bg-green-600 text-white"
           >
+            {isLoading && <Loading classes="mx-2 h-6 w-6" />}
             Register
           </SimpleButton>
         </form>
@@ -80,6 +105,24 @@ function Register() {
           </SimpleButton>
         </Link>
       </div>
+
+      <Modal
+        title="Success"
+        titleColor="text-green-700"
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      >
+        <p>Registration was successful. Please login.</p>
+        <div className="float-right text-white">
+          <SimpleButton
+            classes="px-4"
+            color="text-white bg-blue-500"
+            handleClick={handleCloseModal}
+          >
+            Login
+          </SimpleButton>
+        </div>
+      </Modal>
     </AuthLayout>
   );
 }
