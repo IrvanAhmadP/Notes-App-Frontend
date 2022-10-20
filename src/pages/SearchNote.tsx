@@ -8,9 +8,14 @@ import {
   DataNotFound,
 } from "src/components";
 import NotesContainer from "src/components/NotesContainer";
+import { useEffect } from "react";
 
 function SearchNotes() {
   const { state } = useAppContext();
+
+  useEffect(() => {
+    document.title = "Search " + state.search;
+  }, [state.search]);
 
   const matchNotes = state.notes.filter((note) => {
     return note.title.toLowerCase().search(state.search.toLowerCase()) !== -1;
