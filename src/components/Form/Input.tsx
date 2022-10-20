@@ -1,20 +1,23 @@
+import React from "react";
 import Proptypes from "prop-types";
 
 type InputProps = {
   type?: string;
   label: string;
+  name: string;
+  value: string | undefined;
   error?: string;
   placeholder: string;
-  value: string | undefined;
   handleChange: any;
 };
 
 function Input({
   type = "text",
   label,
+  name,
+  value,
   error,
   placeholder,
-  value,
   handleChange,
 }: InputProps) {
   return (
@@ -22,6 +25,7 @@ function Input({
       <label className="mb-1 block font-semibold text-gray-600">{label}</label>
       <input
         type={type}
+        name={name}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
@@ -34,6 +38,8 @@ function Input({
 
 Input.prototype = {
   label: Proptypes.string.isRequired,
+  name: Proptypes.string.isRequired,
+  value: Proptypes.string,
   error: Proptypes.string,
   placeholder: Proptypes.string.isRequired,
   handleChange: Proptypes.func,

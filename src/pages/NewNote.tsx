@@ -74,9 +74,10 @@ function NewNote() {
           <h2 className="pt-2 text-xl font-semibold capitalize">New Note</h2>
           <Input
             label="Title"
-            error={note.titleError}
-            placeholder="Title"
+            name="title"
             value={note.title}
+            placeholder="Title"
+            error={note.titleError}
             handleChange={handleChangeTitle}
           />
           <Textarea

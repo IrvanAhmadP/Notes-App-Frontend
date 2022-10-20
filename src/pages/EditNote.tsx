@@ -100,9 +100,10 @@ function EditNoteContent({ selectedNote, dispatch }: EditNoteContentProps) {
       <h2 className="pt-2 text-xl font-semibold capitalize">Edit Note</h2>
       <Input
         label="Title"
+        name="title"
+        value={note.title}
         error={note.titleError}
         placeholder="Title"
-        value={note.title}
         handleChange={handleChangeTitle}
       />
       <Textarea
