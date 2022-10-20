@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import { Main, Header, Container } from "src/components";
 
 function NotFound() {
+  useEffect(() => {
+    document.title = "Page Not Found";
+  }, []);
+
   return (
     <div className="App">
       <Header />

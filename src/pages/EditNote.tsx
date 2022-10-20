@@ -1,4 +1,4 @@
-import { useState, Dispatch } from "react";
+import { useState, Dispatch, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Main,
@@ -17,6 +17,10 @@ function EditNote() {
 
   const { state, dispatch } = useAppContext();
   const selectedNote = state.notes.find((n) => n.id.toString() === id);
+
+  useEffect(() => {
+    document.title = "Edit note";
+  }, []);
 
   return (
     <div className="App">

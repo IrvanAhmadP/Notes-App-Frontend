@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   Main,
@@ -24,6 +24,10 @@ function Note() {
   const { state, dispatch } = useAppContext();
   const navigate = useNavigate();
   const note = state.notes.find((note) => note.id.toString() === id);
+
+  useEffect(() => {
+    document.title = note?.title || "note not found";
+  }, [note]);
 
   const [modalData, setModalData] = useState<{
     id: number | undefined;
@@ -124,7 +128,11 @@ function Note() {
               </RoundedButton>
             </div>
 
-            <Modal {...modalData} onClose={handleCloseModal}>
+            <Modal
+              {...modalData}
+              titleColor="text-red-500"
+              onClose={handleCloseModal}
+            >
               <p>
                 Are you sure want to delete{" "}
                 <span className="font-semibold">{modalData.noteTitle}</span>?

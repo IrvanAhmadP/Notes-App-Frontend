@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Main,
@@ -14,6 +14,10 @@ import { ACTIONS, useAppContext } from "src/contexts/appContext";
 function NewNote() {
   const navigate = useNavigate();
   const { dispatch } = useAppContext();
+
+  useEffect(() => {
+    document.title = "New Note";
+  }, []);
 
   const initialNote = {
     title: "",
