@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "src/layouts/AuthLayout";
-import useInput from "src/hooks/useInput";
+import { useInput } from "src/hooks/useInput";
 import { register } from "src/utils/api";
 import { Hr, Loading, Modal, Input, SimpleButton } from "src/components";
 
