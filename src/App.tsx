@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { ReactElement, useEffect } from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "src/contexts/authContext";
 //pages
 import Login from "src/pages/Login";
 import Register from "src/pages/Register";
@@ -9,34 +10,113 @@ import NewNote from "src/pages/NewNote";
 import EditNote from "src/pages/EditNote";
 import NotFound from "src/pages/404";
 import SearchNotes from "./pages/SearchNote";
-import { ReactNode } from "react";
 
 function App() {
   const activeNotes = <Notes page="active" />;
   const archivedNotes = <Notes page="archived" />;
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route index element={activeNotes} />
-        <Route path="archived" element={archivedNotes} />
-        <Route path="new-note" element={<NewNote />} />
-        <Route path="note/:id" element={<Note />} />
-        <Route path="edit/:id" element={<EditNote />} />
-        <Route path="search" element={<SearchNotes />} />
-        <Route path="*" element={<NotFound />} />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Protected Routes */}
+          <Route
+            index
+            element={<ProtectedRoute>{activeNotes}</ProtectedRoute>}
+          />
+          <Route
+            path="archived"
+            element={<ProtectedRoute>{archivedNotes}</ProtectedRoute>}
+          />
+          <Route
+            path="new-note"
+            element={
+              <ProtectedRoute>
+                <NewNote />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="note/:id"
+            element={
+              <ProtectedRoute>
+                <Note />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="edit/:id"
+            element={
+              <ProtectedRoute>
+                <EditNote />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="search"
+            element={
+              <ProtectedRoute>
+                <SearchNotes />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </BrowserRouter>
+          {/* Public Routes */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
 type ProtectedRouteProps = {
-  children: ReactNode;
+  children: ReactElement;
 };
 
-function ProtectedRoute({ children }: ProtectedRouteProps) {}
+function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const navigate = useNavigate();
+  const { isLogin } = useAuth();
+
+  useEffect(() => {
+    if (!isLogin) {
+      navigate("/login");
+    }
+  }, [isLogin]);
+
+  return children;
+}
+
+type PublicRouteProps = {
+  children: ReactElement;
+};
+
+function PublicRoute({ children }: PublicRouteProps) {
+  const navigate = useNavigate();
+  const { isLogin } = useAuth();
+  useEffect(() => {
+    if (isLogin) {
+      navigate("/");
+    }
+  }, [isLogin]);
+
+  return children;
+}
 
 export default App;
