@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { isValidTitle } from "src/utils/validation";
 
 function useInput(defaultValue: string = "") {
   const [value, setValue] = useState(defaultValue);
@@ -7,7 +8,31 @@ function useInput(defaultValue: string = "") {
     setValue(e.target.value);
   };
 
-  return [value, handleChange] as const;
+  const handleReset = () => {
+    setValue("");
+  };
+
+  return [value, handleChange, handleReset] as const;
 }
 
-export default useInput;
+function useInputValidation(validation: string, defaultValue: string = "") {
+  const [value, setValue] = useState(defaultValue);
+  const [error, setError] = useState("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+
+    if (validation === "title") {
+      setError(isValidTitle(newValue).message);
+    }
+  };
+
+  const handleReset = () => {
+    setValue("");
+  };
+
+  return [value, error, handleChange, handleReset] as const;
+}
+
+export { useInput, useInputValidation };
