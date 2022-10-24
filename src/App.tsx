@@ -1,6 +1,7 @@
-import { ReactElement, useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { ReactElement } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "src/contexts/authContext";
+
 //pages
 import Login from "src/pages/Login";
 import Register from "src/pages/Register";
@@ -10,6 +11,8 @@ import NewNote from "src/pages/NewNote";
 import EditNote from "src/pages/EditNote";
 import NotFound from "src/pages/404";
 import SearchNotes from "./pages/SearchNote";
+
+import { Loading } from "src/components";
 
 function App() {
   const activeNotes = <Notes page="active" />;
@@ -61,17 +64,17 @@ function App() {
         <Route
           path="/login"
           element={
-            <PublicRoute>
+            <AuthRoute>
               <Login />
-            </PublicRoute>
+            </AuthRoute>
           }
         />
         <Route
           path="/register"
           element={
-            <PublicRoute>
+            <AuthRoute>
               <Register />
-            </PublicRoute>
+            </AuthRoute>
           }
         />
 
@@ -86,47 +89,43 @@ type ProtectedRouteProps = {
 };
 
 function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const [isLoading, setIsLoading] = useState(true);
-  const auth = useAuth();
-  const navigate = useNavigate();
+  const { isLoading, auth } = useAuth();
 
-  useEffect(() => {
-    if (!auth) {
-      navigate("/login");
-    } else {
-      setIsLoading(false);
-    }
-  }, [auth, navigate]);
+  if (!isLoading && !auth) {
+    return <Navigate to="/login" />;
+  }
 
   if (isLoading) {
-    return <div>"loading..."</div>;
-  } else {
-    return children;
+    return (
+      <div className="flex h-[calc(100vh)]">
+        <Loading classes="w-10 m-auto" />
+      </div>
+    );
   }
+
+  return children;
 }
 
-type PublicRouteProps = {
+type AuthRouteProps = {
   children: ReactElement;
 };
 
-function PublicRoute({ children }: PublicRouteProps) {
-  const [isLoading, setIsLoading] = useState(true);
-  const auth = useAuth();
-  const navigate = useNavigate();
+function AuthRoute({ children }: AuthRouteProps) {
+  const { isLoading, auth } = useAuth();
 
-  useEffect(() => {
-    if (auth) {
-      navigate("/");
-    } else {
-      setIsLoading(false);
-    }
-  }, [auth, navigate]);
+  if (!isLoading && auth) {
+    return <Navigate to="/" />;
+  }
 
   if (isLoading) {
-    return <div>"loading..."</div>;
-  } else {
-    return children;
+    return (
+      <div className="flex h-[calc(100vh)]">
+        <Loading classes="w-10 m-auto" />
+      </div>
+    );
   }
+
+  return children;
 }
 
 export default App;
