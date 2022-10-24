@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "src/layouts/AuthLayout";
 import { useInput } from "src/hooks/useInput";
-import { login, putAccessToken } from "src/utils/api";
+import { useAuth } from "src/contexts/authContext";
+import { login } from "src/utils/api";
 import { Hr, Loading, Input, SimpleButton } from "src/components";
 
 function Login() {
   const navigate = useNavigate();
+  const { onLogin } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [email, handleEmailChange] = useInput("");
   const [password, handlePasswordChange] = useInput("");
@@ -22,12 +24,13 @@ function Login() {
     setError("");
     setIsLoading(true);
 
-    const result = await login({ email, password });
-    if (result.error === true) {
-      setError(result.message);
+    const { error, message, data } = await login({ email, password });
+    if (error === true) {
+      setError(message);
     } else {
-      putAccessToken(result.data.accessToken);
-      navigate("/");
+      onLogin(data.accessToken);
+
+      navigate("/", { replace: true });
     }
 
     setIsLoading(false);
