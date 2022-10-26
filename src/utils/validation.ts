@@ -4,7 +4,7 @@ function isValidTitle(val: string) {
   if (val.length < MIN) {
     return {
       valid: false,
-      message: "Invalid name format",
+      message: `The title must be at least ${MIN} characters`,
     };
   }
 
