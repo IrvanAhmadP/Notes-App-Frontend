@@ -8,7 +8,6 @@ import Register from "src/pages/Register";
 import Note from "src/pages/Note";
 import Notes from "src/pages/Notes";
 import NewNote from "src/pages/NewNote";
-import EditNote from "src/pages/EditNote";
 import NotFound from "src/pages/404";
 import SearchNotes from "./pages/SearchNote";
 
@@ -40,14 +39,6 @@ function App() {
           element={
             <ProtectedRoute>
               <Note />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="edit/:id"
-          element={
-            <ProtectedRoute>
-              <EditNote />
             </ProtectedRoute>
           }
         />
