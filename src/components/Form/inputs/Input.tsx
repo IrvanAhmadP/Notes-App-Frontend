@@ -1,9 +1,8 @@
-import React from "react";
 import Proptypes from "prop-types";
 
 type InputProps = {
   type?: string;
-  label: string;
+  label?: string;
   name: string;
   value: string | undefined;
   error?: string;
@@ -37,7 +36,7 @@ function Input({
 }
 
 Input.prototype = {
-  label: Proptypes.string.isRequired,
+  label: Proptypes.string,
   name: Proptypes.string.isRequired,
   value: Proptypes.string,
   error: Proptypes.string,
