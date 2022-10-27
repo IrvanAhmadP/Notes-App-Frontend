@@ -9,7 +9,6 @@ import Note from "src/pages/Note";
 import Notes from "src/pages/Notes";
 import NewNote from "src/pages/NewNote";
 import NotFound from "src/pages/404";
-import SearchNotes from "./pages/SearchNote";
 
 import { Loading } from "src/components";
 
@@ -39,14 +38,6 @@ function App() {
           element={
             <ProtectedRoute>
               <Note />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="search"
-          element={
-            <ProtectedRoute>
-              <SearchNotes />
             </ProtectedRoute>
           }
         />
