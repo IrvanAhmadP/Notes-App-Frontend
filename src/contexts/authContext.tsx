@@ -6,9 +6,10 @@ import {
   useMemo,
   useState,
 } from "react";
+import { authTypes, userTypes } from "src/@types/auth";
 import { getAccessToken, getUserLogged, putAccessToken } from "src/utils/api";
 
-const AuthContext = createContext({
+const AuthContext = createContext<authTypes>({
   isLoading: true,
   auth: null,
   onLogin: (token: string) => {},
@@ -22,7 +23,7 @@ type AuthProviderProps = {
 function AuthProvider({ children }: AuthProviderProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [token, setToken] = useState(getAccessToken || null);
-  const [auth, setAuth] = useState(null);
+  const [auth, setAuth] = useState<userTypes | null>(null);
 
   useEffect(() => {
     if (token !== "" && token !== null) {

@@ -3,8 +3,10 @@ import ReactDOM from "react-dom/client";
 import "src/styles/global.css";
 import App from "src/App";
 import reportWebVitals from "./reportWebVitals";
-import { AppProvider } from "src/contexts/appContext";
-import { AuthProvider } from "./contexts/authContext";
+import { SearchProvider } from "src/contexts/searchContext";
+import { AuthProvider } from "src/contexts/authContext";
+import { ThemeProvider } from "src/contexts/themeContext";
+import { LanguageProvider } from "src/contexts/languageContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -12,9 +14,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <AppProvider>
-        <App />
-      </AppProvider>
+      <LanguageProvider>
+        <ThemeProvider>
+          <SearchProvider>
+            <App />
+          </SearchProvider>
+        </ThemeProvider>
+      </LanguageProvider>
     </AuthProvider>
   </React.StrictMode>
 );
