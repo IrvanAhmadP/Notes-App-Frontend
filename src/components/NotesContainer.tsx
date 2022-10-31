@@ -1,21 +1,24 @@
 import { useState } from "react";
 import Proptypes from "prop-types";
-import { ACTIONS, useAppContext } from "src/contexts/appContext";
+import { deleteNote } from "src/utils/api";
 import { DataNotFound, Modal, SimpleButton, Note } from "src/components";
 
 type NotesContainerProps = {
   notes: any;
+  handleRemoveNoteFromList: (id: string) => void;
 };
 
-function NotesContainer({ notes }: NotesContainerProps) {
-  const { dispatch } = useAppContext();
+function NotesContainer({
+  notes,
+  handleRemoveNoteFromList,
+}: NotesContainerProps) {
   const [modalData, setModalData] = useState<{
-    id: number | undefined;
+    id: string;
     isOpen: boolean;
     title: string;
     noteTitle: string | undefined;
   }>({
-    id: undefined,
+    id: "",
     isOpen: false,
     title: "Delete note",
     noteTitle: undefined,
@@ -25,7 +28,7 @@ function NotesContainer({ notes }: NotesContainerProps) {
     setModalData({ ...modalData, isOpen: false });
   };
 
-  const handleOpenModalDeleteNote = (id: number, noteTitle: string) => {
+  const handleOpenModalDeleteNote = (id: string, noteTitle: string) => {
     setModalData({
       ...modalData,
       id: id,
@@ -37,10 +40,8 @@ function NotesContainer({ notes }: NotesContainerProps) {
   const hanldeDeleteNote = () => {
     handleCloseModal();
 
-    dispatch({
-      type: ACTIONS.DELETE,
-      payload: { id: modalData.id },
-    });
+    deleteNote(modalData.id);
+    handleRemoveNoteFromList(modalData.id);
   };
 
   return (
@@ -53,6 +54,7 @@ function NotesContainer({ notes }: NotesContainerProps) {
             <Note
               key={note.id}
               {...note}
+              handleRemoveNoteFromList={handleRemoveNoteFromList}
               handleOpenModalDeleteNote={handleOpenModalDeleteNote}
             />
           ))

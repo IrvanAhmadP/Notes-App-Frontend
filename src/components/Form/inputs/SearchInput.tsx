@@ -2,12 +2,16 @@ import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSearch } from "src/contexts/searchContext";
+import { useLocale } from "src/contexts/localeContext";
+import { searchInputComponentContent } from "src/utils/content";
 
 type SearchInputProps = {
   searchMatchTotal: number;
 };
 
 function SearchInput({ searchMatchTotal }: SearchInputProps) {
+  const { locale } = useLocale();
+  const t = searchInputComponentContent()[locale];
   const { search, setSearch } = useSearch();
   const [searchParams, setSearchParams] = useSearchParams("");
   const inputSearchRef = useRef<HTMLInputElement>(null);
@@ -32,7 +36,7 @@ function SearchInput({ searchMatchTotal }: SearchInputProps) {
   };
 
   return (
-    <div className="mb-2 text-gray-600">
+    <div className="mb-2 text-gray-600 dark:text-slate-300">
       <MagnifyingGlassIcon className="absolute mt-3 ml-3 h-4 w-4 hover:text-gray-700" />
 
       <input
@@ -41,8 +45,8 @@ function SearchInput({ searchMatchTotal }: SearchInputProps) {
         value={search}
         ref={inputSearchRef}
         onChange={handleChange}
-        placeholder="Type the keyword"
-        className="h-10 w-full rounded-md border border-gray-300 bg-white pl-9 pr-4 outline-none"
+        placeholder={t.searchInputPlaceholder}
+        className="h-10 w-full rounded-md border border-gray-300 bg-white pl-9 pr-4 outline-none dark:border-slate-500 dark:bg-slate-700"
       />
 
       {search !== "" && (
@@ -51,8 +55,8 @@ function SearchInput({ searchMatchTotal }: SearchInputProps) {
             <XMarkIcon className="absolute -ml-6 -mt-3.5 h-4 w-4" />
           </button>
 
-          <p className="mt-2 font-semibold text-gray-500">
-            {searchMatchTotal} results for "{search}"
+          <p className="mt-2 font-semibold text-gray-500 dark:text-slate-400">
+            {searchMatchTotal} {t.searchResultMessage} "{search}"
           </p>
         </>
       )}

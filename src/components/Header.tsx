@@ -1,112 +1,71 @@
-import { FormEvent, useEffect, useRef } from "react";
+import { ReactNode } from "react";
+import { Link } from "react-router-dom";
 import {
-  createSearchParams,
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+  MoonIcon,
+  SunIcon,
+  ArrowLeftOnRectangleIcon,
+} from "@heroicons/react/24/outline";
+import { useAuth } from "src/contexts/authContext";
+import { useLocale } from "src/contexts/localeContext";
+import { useTheme } from "src/contexts/themeContext";
 import { Container } from "src/components";
-import { ACTIONS, useAppContext } from "src/contexts/appContext";
 
 function Header() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const { state, dispatch } = useAppContext();
-  const searchRef = useRef<HTMLInputElement>(null);
-
-  let keyword = searchParams.get("keyword");
-  if (keyword === null) {
-    keyword = "";
-  }
-
-  useEffect(() => {
-    if (location.pathname === "/search") {
-      handleFocusSearchRef();
-
-      dispatch({
-        type: ACTIONS.SEARCH,
-        payload: { search: keyword },
-      });
-    }
-  }, []);
-
-  const handleFocusSearchRef = () => {
-    if (null !== searchRef.current) {
-      searchRef.current.focus();
-    }
-  };
-
-  const handleSearch = (e: FormEvent<HTMLInputElement>) => {
-    const keyword = e.currentTarget.value;
-    navigate({
-      pathname: "/search",
-      search: createSearchParams({ keyword }).toString(),
-    });
-
-    dispatch({
-      type: ACTIONS.SEARCH,
-      payload: { search: keyword },
-    });
-  };
-
-  const handleResetSearch = () => {
-    dispatch({ type: ACTIONS.RESERT_SEARCH });
-
-    handleFocusSearchRef();
-  };
+  const { auth, onLogout } = useAuth();
+  const { locale, toggleLocale } = useLocale();
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="bg-slate-800 py-4 text-white">
+    <header className="bg-slate-800 py-4 text-white dark:bg-slate-700">
       <Container>
-        <div className="flex justify-between">
-          <h3 className="flex-grow text-3xl font-semibold">
+        <div className="flex justify-between gap-2">
+          <h3 className="text-3xl font-semibold">
             <Link to="/">Notes</Link>
           </h3>
 
-          <div className="flex">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="absolute mt-3 ml-3 h-4 w-4 text-white hover:text-gray-400"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                clipRule="evenodd"
-              />
-            </svg>
+          <div className="flex items-center gap-2">
+            <div className="flex gap-2">
+              <Menu handleClick={toggleLocale}>
+                {locale === "id" ? (
+                  <img className="h-5" src="/flags/en-US.svg" alt="English" />
+                ) : (
+                  <img className="h-5" src="/flags/id-ID.svg" alt="Indonesia" />
+                )}
+              </Menu>
 
-            <input
-              className="h-10 rounded-md border border-slate-500 bg-inherit bg-slate-700 pl-9 pr-4 outline-none placeholder:text-gray-200"
-              placeholder="Search"
-              ref={searchRef}
-              value={state.search}
-              onChange={handleSearch}
-            />
+              <Menu handleClick={toggleTheme}>
+                {theme === "light" ? (
+                  <MoonIcon className="h-5 w-5" />
+                ) : (
+                  <SunIcon className="h-5 w-5" />
+                )}
+              </Menu>
 
-            {state.search !== "" && (
-              <button className="relative" onClick={handleResetSearch}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="absolute -ml-6 -mt-2 h-4 w-4"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-            )}
+              <Menu handleClick={onLogout}>
+                <ArrowLeftOnRectangleIcon className="inline h-5 w-5" />
+                <span className="capitalize"> Hi {auth?.name}!</span>{" "}
+              </Menu>
+            </div>
           </div>
         </div>
       </Container>
     </header>
+  );
+}
+
+type MenuProps = {
+  children: ReactNode;
+  handleClick?: () => void;
+};
+
+function Menu({ children, handleClick }: MenuProps) {
+  return (
+    <div
+      onClick={handleClick}
+      className="cursor-pointer rounded-md p-2 hover:bg-gray-600 active:bg-gray-600"
+    >
+      {children}
+    </div>
   );
 }
 

@@ -4,12 +4,12 @@ const initialValue = {
   search: "",
 };
 
-type SearchContextProps = {
+type searchTypes = {
   search: string;
   setSearch?: any;
 };
 
-const SearchContext = createContext<SearchContextProps>(initialValue);
+const SearchContext = createContext<searchTypes>(initialValue);
 
 type SearchProviderProps = {
   children: ReactNode;

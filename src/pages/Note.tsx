@@ -1,51 +1,85 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  ArchiveBoxArrowDownIcon,
+  ArchiveBoxXMarkIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import {
   Main,
   Modal,
   Header,
   Container,
+  Spinner,
   NavBar,
   NoteNotFound,
   SimpleButton,
   RoundedButton,
 } from "src/components";
-import { showFormattedDate } from "src/utils/index";
-import { ACTIONS, useAppContext } from "src/contexts/appContext";
-import {
-  ArchiveBoxArrowDownIcon,
-  ArchiveBoxXMarkIcon,
-  PencilIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
+import { noteTypes } from "src/@types/note";
+import { showFormattedDate } from "src/utils/date";
+import { getNote, deleteNote, archiveNote, unarchiveNote } from "src/utils/api";
+import { noteContent } from "src/utils/content";
+import { useLocale } from "src/contexts/localeContext";
 
 function Note() {
-  const { id } = useParams();
-  const { state, dispatch } = useAppContext();
+  const { locale } = useLocale();
+  const t = noteContent()[locale];
   const navigate = useNavigate();
-  const note = state.notes.find((note) => note.id.toString() === id);
+  const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const [note, setNote] = useState<noteTypes | null>(null);
 
   useEffect(() => {
-    document.title = note?.title || "note not found";
-  }, [note]);
+    document.title = note?.title || t.notFoundTitle;
+  }, [note?.title, t.notFoundTitle]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    getNote(id).then(({ error, data }) => {
+      if (error) return;
+
+      setNote(data);
+      setIsLoading(false);
+    });
+  }, [id]);
 
   const [modalData, setModalData] = useState<{
-    id: number | undefined;
+    id: string;
     isOpen: boolean;
     title: string;
     noteTitle: string | undefined;
   }>({
-    id: undefined,
+    id: "",
     isOpen: false,
-    title: "Delete note",
+    title: t.modalTitle,
     noteTitle: undefined,
   });
+
+  const handleArchive = (id: string) => {
+    if (!id) return;
+    archiveNote(id);
+
+    if (note) {
+      setNote({ ...note, archived: true });
+    }
+  };
+
+  const handleUnarchive = (id: string) => {
+    if (!id) return;
+    unarchiveNote(id);
+
+    if (note) {
+      setNote({ ...note, archived: false });
+    }
+  };
 
   const handleCloseModal = () => {
     setModalData({ ...modalData, isOpen: false });
   };
 
-  const handleOpenModalDeleteNote = (id: number, noteTitle: string) => {
+  const handleOpenModalDeleteNote = (id: string, noteTitle: string) => {
     setModalData({
       ...modalData,
       isOpen: true,
@@ -57,10 +91,8 @@ function Note() {
   const hanldeDeleteNote = () => {
     handleCloseModal();
 
-    dispatch({
-      type: ACTIONS.DELETE,
-      payload: { id: modalData.id },
-    });
+    if (!id) return;
+    deleteNote(id);
 
     navigate("/");
   };
@@ -70,10 +102,14 @@ function Note() {
       <Header />
       <Main>
         <Container>
-          {note !== undefined ? (
-            <div className="mt-4 h-fit bg-white p-4">
+          {isLoading ? (
+            <div className="flex h-[calc(100vh_-_128px_-_5rem)] justify-center">
+              <Spinner classes="w-10 h-10 m-auto" />
+            </div>
+          ) : note ? (
+            <div className="mt-4 h-fit bg-white p-4 dark:bg-slate-700">
               <h1 className="text-2xl">{note.title}</h1>
-              <span className="font-semibold text-gray-400">
+              <span className="font-semibold text-gray-500 dark:text-gray-400">
                 {showFormattedDate(note.createdAt)}
               </span>
               <div>{note.body}</div>
@@ -83,43 +119,27 @@ function Note() {
           )}
         </Container>
 
-        {note !== undefined && (
+        {note && (
           <>
             <div className="fixed bottom-[72px] right-4 z-10 grid grid-cols-3 gap-2">
-              <Link to={`/edit/${note?.id}`}>
-                <RoundedButton color="bg-blue-500 text-white">
-                  <PencilIcon className="m-auto h-6 w-6" />
-                </RoundedButton>
-              </Link>
-
               {note.archived ? (
                 <RoundedButton
-                  color="bg-orange-500 text-white"
-                  handleClick={() =>
-                    dispatch({
-                      type: ACTIONS.UNARCHIVE,
-                      payload: { id: note.id },
-                    })
-                  }
+                  color="bg-orange-500 dark:bg-orange-700 text-white"
+                  handleClick={() => handleUnarchive(note.id)}
                 >
                   <ArchiveBoxXMarkIcon className="m-auto h-6 w-6" />
                 </RoundedButton>
               ) : (
                 <RoundedButton
-                  color="bg-green-500 text-white"
-                  handleClick={() =>
-                    dispatch({
-                      type: ACTIONS.ARCHIVE,
-                      payload: { id: note?.id },
-                    })
-                  }
+                  color="bg-green-500 dark:bg-green-700 text-white"
+                  handleClick={() => handleArchive(note.id)}
                 >
                   <ArchiveBoxArrowDownIcon className="m-auto h-6 w-6" />
                 </RoundedButton>
               )}
 
               <RoundedButton
-                color="bg-red-500 text-white"
+                color="bg-red-500 dark:bg-red-700 text-white"
                 handleClick={() =>
                   handleOpenModalDeleteNote(note.id, note?.title)
                 }
@@ -134,7 +154,7 @@ function Note() {
               onClose={handleCloseModal}
             >
               <p>
-                Are you sure want to delete{" "}
+                {t.modalMessage}{" "}
                 <span className="font-semibold">{modalData.noteTitle}</span>?
               </p>
               <div className="float-right grid w-56 grid-cols-2 gap-2 text-white">
@@ -143,10 +163,10 @@ function Note() {
                   classes="text-black"
                   handleClick={handleCloseModal}
                 >
-                  Cancel
+                  {t.modalCancelButton}
                 </SimpleButton>
                 <SimpleButton color="bg-red-500" handleClick={hanldeDeleteNote}>
-                  Delete
+                  {t.modalDeleteButton}
                 </SimpleButton>
               </div>
             </Modal>

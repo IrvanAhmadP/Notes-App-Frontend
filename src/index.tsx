@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { SearchProvider } from "src/contexts/searchContext";
 import { AuthProvider } from "src/contexts/authContext";
 import { ThemeProvider } from "src/contexts/themeContext";
-import { LanguageProvider } from "src/contexts/languageContext";
+import { LocaleProvider } from "src/contexts/localeContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -14,13 +14,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <LanguageProvider>
+      <LocaleProvider>
         <ThemeProvider>
           <SearchProvider>
             <App />
           </SearchProvider>
         </ThemeProvider>
-      </LanguageProvider>
+      </LocaleProvider>
     </AuthProvider>
   </React.StrictMode>
 );

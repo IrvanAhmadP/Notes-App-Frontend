@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import Proptypes from "prop-types";
+import { useLocale } from "src/contexts/localeContext";
+import { navBarComponentContent } from "src/utils/content";
 
 type NavBarProps = {
   page: "active" | "archived" | "search";
@@ -7,26 +9,33 @@ type NavBarProps = {
 
 function NavBar({ page }: NavBarProps) {
   return (
-    <nav className="fixed bottom-0 z-10 flex w-full divide-x border-t border-gray-300 bg-white text-center font-semibold">
+    <nav className="fixed bottom-0 z-10 flex w-full divide-x border-t border-gray-300 bg-white text-center font-semibold dark:divide-slate-500 dark:border-slate-500 dark:bg-slate-700">
       {<NavLinks page={page} />}
     </nav>
   );
 }
 
 function NavLinks({ page }: NavBarProps) {
+  const { locale } = useLocale();
+  const t = navBarComponentContent()[locale];
+
   return (
     <>
       <Link
         to="/"
-        className={`${page === "active" ? "text-cyan-700" : ""} flex-1 py-4`}
+        className={`${
+          page === "active" ? "text-blue-700 dark:text-blue-300" : ""
+        } flex-1 py-4`}
       >
-        Active Notes
+        {t.activeNotesLink}
       </Link>
       <Link
         to="/archived"
-        className={`${page === "archived" ? "text-cyan-700" : ""} flex-1 py-4`}
+        className={`${
+          page === "archived" ? "text-blue-700 dark:text-blue-300" : ""
+        } flex-1 py-4`}
       >
-        Archived Notes
+        {t.archivedNotesLink}
       </Link>
     </>
   );

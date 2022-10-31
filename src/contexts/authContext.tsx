@@ -9,12 +9,14 @@ import {
 import { authTypes, userTypes } from "src/@types/auth";
 import { getAccessToken, getUserLogged, putAccessToken } from "src/utils/api";
 
-const AuthContext = createContext<authTypes>({
+const initialValue = {
   isLoading: true,
   auth: null,
   onLogin: (token: string) => {},
   onLogout: () => {},
-});
+};
+
+const AuthContext = createContext<authTypes>(initialValue);
 
 type AuthProviderProps = {
   children: ReactNode;

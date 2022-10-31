@@ -1,16 +1,19 @@
 import Proptypes from "prop-types";
 import { Link } from "react-router-dom";
 import { SimpleButton } from "src/components";
-import { showFormattedDate } from "src/utils/index";
-import { ACTIONS, useAppContext } from "src/contexts/appContext";
+import { showFormattedDate } from "src/utils/date";
+import { archiveNote, unarchiveNote } from "src/utils/api";
+import { useLocale } from "src/contexts/localeContext";
+import { noteComponentContent } from "src/utils/content";
 
 type NoteProps = {
-  id: number;
+  id: string;
   title: string;
   body: string;
   archived: boolean;
   createdAt: string;
-  handleOpenModalDeleteNote: (id: number, noteTitle: string) => void;
+  handleRemoveNoteFromList: (id: string) => void;
+  handleOpenModalDeleteNote: (id: string, noteTitle: string) => void;
 };
 
 function Note({
@@ -19,44 +22,46 @@ function Note({
   body,
   archived,
   createdAt,
+  handleRemoveNoteFromList,
   handleOpenModalDeleteNote,
 }: NoteProps) {
-  const { dispatch } = useAppContext();
+  const { locale } = useLocale();
+  const t = noteComponentContent()[locale];
+
+  const handleArchive = (id: string) => {
+    archiveNote(id);
+    handleRemoveNoteFromList(id);
+  };
+
+  const handleUnarchive = (id: string) => {
+    unarchiveNote(id);
+    handleRemoveNoteFromList(id);
+  };
 
   return (
-    <div className="-mx-4 border-b border-gray-300 bg-white p-4 sm:mx-0 md:first:rounded-t-lg md:last:rounded-b-lg">
+    <div className="-mx-4 border border-gray-300 bg-white p-4 dark:border-slate-500 dark:bg-slate-700 sm:mx-0 md:first:rounded-t-lg md:last:rounded-b-lg">
       <Link to={`/note/${id}`}>
         <p className="text-lg font-semibold">{title}</p>
       </Link>
-      <span className="font-semibold text-gray-400">
+      <span className="font-semibold text-gray-500 dark:text-gray-400">
         {showFormattedDate(createdAt)}
       </span>
       <p className="text-justify">{body}</p>
 
-      <div className="mt-2 grid max-w-lg grid-cols-3 gap-4 font-semibold text-white">
-        <Link className="w-full" to={`/edit/${id}`}>
-          <SimpleButton classes="w-full" color="bg-blue-500">
-            Edit
-          </SimpleButton>
-        </Link>
-
+      <div className="mt-2 grid max-w-xl grid-cols-3 gap-4 font-semibold text-white">
         {archived ? (
           <SimpleButton
-            color="bg-orange-500"
-            handleClick={() =>
-              dispatch({ type: ACTIONS.UNARCHIVE, payload: { id: id } })
-            }
+            color="bg-orange-500 dark:bg-orange-700"
+            handleClick={() => handleUnarchive(id)}
           >
-            Unarchive
+            {t.unarchiveButton}
           </SimpleButton>
         ) : (
           <SimpleButton
-            color="bg-green-500"
-            handleClick={() =>
-              dispatch({ type: ACTIONS.ARCHIVE, payload: { id: id } })
-            }
+            color="bg-green-500 dark:bg-green-700"
+            handleClick={() => handleArchive(id)}
           >
-            Archive
+            {t.archiveButton}
           </SimpleButton>
         )}
 
@@ -64,7 +69,7 @@ function Note({
           color="bg-red-500"
           handleClick={() => handleOpenModalDeleteNote(id, title)}
         >
-          Delete
+          {t.deleteButton}
         </SimpleButton>
       </div>
     </div>
@@ -72,7 +77,7 @@ function Note({
 }
 
 Note.prototype = {
-  id: Proptypes.number.isRequired,
+  id: Proptypes.string.isRequired,
   title: Proptypes.string.isRequired,
   body: Proptypes.string.isRequired,
   archived: Proptypes.bool.isRequired,

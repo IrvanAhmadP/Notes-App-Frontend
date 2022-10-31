@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "src/layouts/AuthLayout";
 import { useInput } from "src/hooks/useInput";
 import { register } from "src/utils/api";
-import { Hr, Loading, Modal, Input, SimpleButton } from "src/components";
+import { Hr, Spinner, Modal, Input, SimpleButton } from "src/components";
+import { useLocale } from "src/contexts/localeContext";
+import { registerContent } from "src/utils/content";
 
 function Register() {
+  const { locale } = useLocale();
+  const t = registerContent()[locale];
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,6 +18,10 @@ function Register() {
   const [password, handlePasswordChange] = useInput("");
   const [confirmPassword, handleConfirmPasswordChange] = useInput("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    document.title = t.title;
+  }, [t.title]);
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,39 +55,38 @@ function Register() {
   };
 
   return (
-    <AuthLayout>
-      <div className="flex w-96 flex-col rounded-md p-8">
-        <h1 className="text-center text-2xl font-bold">Register</h1>
+    <AuthLayout title={t.title}>
+      <div className="flex w-96 flex-col rounded-md">
         <form onSubmit={handleRegister}>
           <Input
-            label="Name"
+            label={t.nameInput}
             name="name"
             value={name}
-            placeholder="Name"
+            placeholder={t.nameInput}
             handleChange={handleNameChange}
           />
           <Input
-            label="Email"
+            label={t.emailInput}
             name="email"
             value={email}
-            placeholder="Email"
+            placeholder={t.emailInput}
             handleChange={handleEmailChange}
           />
           <Input
-            label="Password"
+            label={t.passwordInput}
             type="password"
             name="password"
             value={password}
-            placeholder="Password"
+            placeholder={t.passwordInput}
             handleChange={handlePasswordChange}
           />
 
           <Input
-            label="Confirm Password"
+            label={t.confirmPasswordInput}
             type="password"
             name="confirm_password"
             value={confirmPassword}
-            placeholder="Confirm Password"
+            placeholder={t.confirmPasswordInput}
             handleChange={handleConfirmPasswordChange}
           />
 
@@ -87,21 +94,21 @@ function Register() {
 
           <SimpleButton
             classes="mt-2 flex w-full py-2 justify-center font-semibold"
-            color="bg-green-500 hover:bg-green-600 text-white"
+            color="bg-green-500 text-white hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-600"
           >
-            {isLoading && <Loading classes="mx-2 h-6 w-6" />}
-            Register
+            {isLoading && <Spinner classes="mx-2 h-6 w-6" />}
+            {t.registerButton}
           </SimpleButton>
         </form>
 
-        <Hr classes="mt-3 mb-1" text="OR" />
+        <Hr classes="mt-3 mb-1" text={t.textBetweenLines} />
 
         <Link to="/login" className="w-full">
           <SimpleButton
-            color="bg-blue-500 hover:bg-blue-600 text-white"
             classes="py-2 w-full font-semibold mt-2"
+            color="bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-600"
           >
-            Login
+            {t.loginButton}
           </SimpleButton>
         </Link>
       </div>
@@ -112,14 +119,14 @@ function Register() {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       >
-        <p>Registration was successful. Please login.</p>
+        <p>{t.registerSuccessMsg}</p>
         <div className="float-right text-white">
           <SimpleButton
             classes="px-4"
             color="text-white bg-blue-500"
             handleClick={handleCloseModal}
           >
-            Login
+            {t.loginButton}
           </SimpleButton>
         </div>
       </Modal>

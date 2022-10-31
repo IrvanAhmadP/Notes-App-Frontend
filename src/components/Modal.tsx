@@ -19,7 +19,7 @@ function Modal({ title, titleColor, children, isOpen, onClose }: ModalProps) {
           aria-hidden="true"
         />
 
-        <Dialog.Panel className="relative m-auto w-full max-w-screen-sm rounded bg-white p-4">
+        <Dialog.Panel className="relative m-auto w-full max-w-screen-sm rounded bg-white p-4 dark:bg-slate-700">
           <Dialog.Title
             className={`${
               titleColor ? titleColor : ""

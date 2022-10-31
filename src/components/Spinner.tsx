@@ -1,8 +1,8 @@
-type LoadingProps = {
+type SpinnerProps = {
   classes?: string;
 };
 
-function Loading({ classes }: LoadingProps) {
+function Spinner({ classes }: SpinnerProps) {
   return (
     <svg
       className={`${classes ? classes : ""} animate-spin`}
@@ -27,4 +27,4 @@ function Loading({ classes }: LoadingProps) {
   );
 }
 
-export default Loading;
+export default Spinner;

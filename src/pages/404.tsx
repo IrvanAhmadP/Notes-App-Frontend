@@ -2,12 +2,16 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Main, Container } from "src/components";
 import { useAuth } from "src/contexts/authContext";
+import { useLocale } from "src/contexts/localeContext";
+import { pageNotFoundContent } from "src/utils/content";
 
 function NotFound() {
+  const { locale } = useLocale();
+  const t = pageNotFoundContent()[locale];
   const { auth } = useAuth();
   useEffect(() => {
-    document.title = "Page Not Found";
-  }, []);
+    document.title = t.title;
+  }, [t.title]);
 
   return (
     <div className="App">
@@ -21,14 +25,14 @@ function NotFound() {
             />
 
             <p className="font-semibold">
-              Page not found, back to{" "}
+              {t.message}{" "}
               {auth ? (
                 <Link to="/" className="text-blue-500">
-                  home
+                  {t.homeLink}
                 </Link>
               ) : (
                 <Link to="/login" className="text-blue-500">
-                  login
+                  {t.loginLink}
                 </Link>
               )}
               .

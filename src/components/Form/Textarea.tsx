@@ -10,13 +10,15 @@ type TextareaProps = {
 function Textarea({ label, placeholder, value, handleChange }: TextareaProps) {
   return (
     <div className="my-2">
-      <label className="mb-1 block font-semibold text-gray-600">{label}</label>
+      <label className="mb-1 block font-semibold text-gray-600 dark:text-gray-300">
+        {label}
+      </label>
       <textarea
-        className="w-full rounded border border-gray-300 bg-gray-100 p-2 outline-none ring-inset focus:ring-2"
         rows={7}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
+        className="w-full rounded border border-gray-300 bg-gray-100 p-2 outline-none ring-inset focus:ring-2 dark:border-slate-500 dark:bg-slate-700"
       />
     </div>
   );

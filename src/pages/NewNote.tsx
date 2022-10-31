@@ -1,67 +1,37 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Main,
   Header,
   Container,
-  Checkbox,
   Input,
   Textarea,
   SimpleButton,
 } from "src/components";
-import { ACTIONS, useAppContext } from "src/contexts/appContext";
+import { addNote } from "src/utils/api";
+import { useInput, useInputValidation } from "src/hooks/useInput";
+import { useLocale } from "src/contexts/localeContext";
+import { newNoteContent } from "src/utils/content";
 
 function NewNote() {
+  const { locale } = useLocale();
+  const t = newNoteContent()[locale];
   const navigate = useNavigate();
-  const { dispatch } = useAppContext();
+  const [title, titleError, handleTitleChange, handleTitleReset] =
+    useInputValidation("title");
+  const [body, handleBodyChange, handleBodyReset] = useInput();
 
   useEffect(() => {
-    document.title = "New Note";
-  }, []);
-
-  const initialNote = {
-    title: "",
-    titleError: "",
-    body: "",
-    archived: false,
-    disabledSaveButton: true,
-  };
-  const [note, setNote] = useState(initialNote);
-
-  const handleChangeTitle = (e: any) => {
-    const value = e.target.value;
-    const MIN = 5,
-      MAX = 100;
-    let isTitleError, titleError;
-
-    if (value.length < MIN) {
-      isTitleError = true;
-      titleError = `The title must be at least ${MIN} characters`;
-    } else if (value.length > MAX) {
-      isTitleError = true;
-      titleError = `The title maximum ${MAX} characters`;
-    } else {
-      isTitleError = false;
-      titleError = "";
-    }
-
-    setNote({
-      ...note,
-      title: value,
-      titleError: titleError,
-      disabledSaveButton: isTitleError,
-    });
-  };
+    document.title = t.title;
+  }, [t.title]);
 
   const handleResetNote = () => {
-    setNote(initialNote);
+    handleTitleReset();
+    handleBodyReset();
   };
 
   const handleSaveNote = () => {
-    dispatch({
-      type: ACTIONS.ADD,
-      payload: { ...note, id: +new Date(), createdAt: new Date().toJSON() },
-    });
+    addNote({ title, body });
     handleResetNote();
     navigate("/");
   };
@@ -71,42 +41,37 @@ function NewNote() {
       <Header />
       <Main>
         <Container>
-          <h2 className="pt-2 text-xl font-semibold capitalize">New Note</h2>
+          <h2 className="pt-2 text-xl font-semibold capitalize">{t.title}</h2>
+
           <Input
-            label="Title"
+            label={t.titleInput}
             name="title"
-            value={note.title}
-            placeholder="Title"
-            error={note.titleError}
-            handleChange={handleChangeTitle}
+            value={title}
+            placeholder={t.titleInput}
+            error={titleError}
+            handleChange={handleTitleChange}
           />
+
           <Textarea
-            label="Body"
-            placeholder="Write a note here..."
-            value={note.body}
-            handleChange={(e) => setNote({ ...note, body: e.target.value })}
+            label={t.bodyInputLabel}
+            placeholder={t.bodyInputPlaceholder}
+            value={body}
+            handleChange={handleBodyChange}
           />
-          <Checkbox
-            id="archive"
-            label="Archive"
-            checked={note.archived}
-            handleChange={(e) => {
-              setNote({ ...note, archived: e.target.checked });
-            }}
-          />
+
           <div className="float-right my-2 grid w-56 grid-cols-2 gap-2">
             <SimpleButton
               color="bg-red-400 text-white"
               handleClick={handleResetNote}
             >
-              Reset
+              {t.resetButton}
             </SimpleButton>
             <SimpleButton
-              disabled={note.disabledSaveButton}
+              disabled={title === "" || titleError !== ""}
               color="bg-blue-400 text-white"
               handleClick={handleSaveNote}
             >
-              Save
+              {t.saveButton}
             </SimpleButton>
           </div>
         </Container>

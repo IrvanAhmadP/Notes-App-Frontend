@@ -4,7 +4,7 @@ type noteTypes = {
   body: string;
   createdAt: string;
   archived: boolean;
-  owner: string;
+  owner?: string;
 };
 
 export type { noteTypes };

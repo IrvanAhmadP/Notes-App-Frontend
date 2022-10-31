@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "src/layouts/AuthLayout";
 import { useInput } from "src/hooks/useInput";
+import { useLocale } from "src/contexts/localeContext";
 import { useAuth } from "src/contexts/authContext";
 import { login } from "src/utils/api";
-import { Hr, Loading, Input, SimpleButton } from "src/components";
+import { Hr, Spinner, Input, SimpleButton } from "src/components";
+import { loginContent } from "src/utils/content";
 
 function Login() {
+  const { locale } = useLocale();
+  const t = loginContent()[locale];
   const navigate = useNavigate();
   const { onLogin } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -15,8 +19,8 @@ function Login() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    document.title = "Login";
-  }, []);
+    document.title = t.title;
+  }, [t.title]);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,45 +41,44 @@ function Login() {
   };
 
   return (
-    <AuthLayout>
-      <div className="flex w-96 flex-col rounded-md p-8">
-        <h1 className="text-center text-2xl font-bold">Login</h1>
+    <AuthLayout title={t.title}>
+      <div className="flex w-96 flex-col rounded-md">
         <form onSubmit={handleLogin}>
           <Input
-            label="Email"
+            label={t.emailInput}
             name="email"
             value={email}
-            placeholder="Email"
+            placeholder={t.emailInput}
             handleChange={handleEmailChange}
           />
           <Input
+            label={t.passwordInput}
             type="password"
-            label="Password"
             name="password"
             value={password}
-            placeholder="Password"
+            placeholder={t.passwordInput}
             handleChange={handlePasswordChange}
           />
 
-          <p className="text-sm text-red-500">{error}</p>
+          <p className="text-sm text-red-500 dark:text-red-300">{error}</p>
 
           <SimpleButton
             classes="mt-2 flex w-full justify-center py-2 font-semibold"
-            color="bg-blue-500 hover:bg-blue-600 text-white"
+            color="bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-700 dark:hover:bg-blue-600"
           >
-            {isLoading && <Loading classes="mx-2 h-6 w-6" />}
-            Login
+            {isLoading && <Spinner classes="mx-2 h-6 w-6" />}
+            {t.loginButton}
           </SimpleButton>
         </form>
 
-        <Hr classes="mt-3 mb-1" text="OR" />
+        <Hr classes="mt-3 mb-1" text={t.textBetweenLines} />
 
         <Link to="/register" className="w-full">
           <SimpleButton
-            color="bg-green-500 hover:bg-green-600 text-white"
             classes="py-2 w-full font-semibold mt-2"
+            color="bg-green-500 text-white hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-600"
           >
-            Register
+            {t.registerButton}
           </SimpleButton>
         </Link>
       </div>
