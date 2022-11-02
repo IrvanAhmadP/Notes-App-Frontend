@@ -9,7 +9,7 @@ type NavBarProps = {
 
 function NavBar({ page }: NavBarProps) {
   return (
-    <nav className="fixed bottom-0 z-10 flex w-full divide-x border-t border-gray-300 bg-white text-center font-semibold dark:divide-slate-500 dark:border-slate-500 dark:bg-slate-700">
+    <nav className="fixed inset-x-0 bottom-0 z-10 flex w-full divide-x border-t border-gray-300 bg-white text-center font-semibold dark:divide-slate-500 dark:border-slate-500 dark:bg-slate-700">
       {<NavLinks page={page} />}
     </nav>
   );
