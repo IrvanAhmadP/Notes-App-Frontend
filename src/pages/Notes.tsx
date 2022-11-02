@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
 import NotesContainer from "src/components/NotesContainer";
-import {
-  Main,
-  Header,
-  Container,
-  Spinner,
-  NewNoteButton,
-  NavBar,
-  SearchInput,
-} from "src/components";
+import { Spinner, NewNoteButton, NavBar, SearchInput } from "src/components";
 import { noteTypes } from "src/@types/note";
 import { getActiveNotes, getArchivedNotes } from "src/utils/api";
 import { useSearch } from "src/contexts/searchContext";
 import { useLocale } from "src/contexts/localeContext";
 import { notesContent } from "src/utils/content";
+import MainLayout from "src/layouts/MainLayout";
 
 type NotesProps = {
   page: "active" | "archived";
@@ -71,34 +64,29 @@ function Notes({ page }: NotesProps) {
   );
 
   return (
-    <div className="App">
-      <Header />
-      <Main>
-        <Container>
-          <h2 className="py-2 text-xl font-semibold capitalize">
-            {page === "active" ? t.activePageTitle : t.archivedPageTitle}
-          </h2>
+    <MainLayout>
+      <h2 className="py-2 text-xl font-semibold capitalize">
+        {page === "active" ? t.activePageTitle : t.archivedPageTitle}
+      </h2>
 
-          <SearchInput searchMatchTotal={matchNotes.length} />
+      <SearchInput searchMatchTotal={matchNotes.length} />
 
-          {isLoading ? (
-            <div className="flex h-[calc(100vh_-_128px_-_5rem)] justify-center">
-              <Spinner classes="w-10 h-10 m-auto" />
-            </div>
-          ) : (
-            notes && (
-              <NotesContainer
-                notes={matchNotes}
-                handleRemoveNoteFromList={handleRemoveNoteFromList}
-              />
-            )
-          )}
-        </Container>
+      {isLoading ? (
+        <div className="flex h-[calc(100vh_-_128px_-_5rem)] justify-center">
+          <Spinner classes="w-10 h-10 m-auto" />
+        </div>
+      ) : (
+        notes && (
+          <NotesContainer
+            notes={matchNotes}
+            handleRemoveNoteFromList={handleRemoveNoteFromList}
+          />
+        )
+      )}
 
-        <NewNoteButton />
-        <NavBar page={page} />
-      </Main>
-    </div>
+      <NewNoteButton />
+      <NavBar page={page} />
+    </MainLayout>
   );
 }
 

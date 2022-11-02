@@ -6,12 +6,8 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import {
-  Main,
   Modal,
-  Header,
-  Container,
   Spinner,
-  NavBar,
   NoteNotFound,
   SimpleButton,
   RoundedButton,
@@ -21,6 +17,7 @@ import { showFormattedDate } from "src/utils/date";
 import { getNote, deleteNote, archiveNote, unarchiveNote } from "src/utils/api";
 import { noteContent } from "src/utils/content";
 import { useLocale } from "src/contexts/localeContext";
+import MainLayout from "src/layouts/MainLayout";
 
 function Note() {
   const { locale } = useLocale();
@@ -98,83 +95,77 @@ function Note() {
   };
 
   return (
-    <div className="App">
-      <Header />
-      <Main>
-        <Container>
-          {isLoading ? (
-            <div className="flex h-[calc(100vh_-_128px_-_5rem)] justify-center">
-              <Spinner classes="w-10 h-10 m-auto" />
-            </div>
-          ) : note ? (
-            <div className="mt-4 h-fit bg-white p-4 dark:bg-slate-700">
-              <h1 className="text-2xl">{note.title}</h1>
-              <span className="font-semibold text-gray-500 dark:text-gray-400">
-                {showFormattedDate(note.createdAt)}
-              </span>
-              <div>{note.body}</div>
-            </div>
-          ) : (
-            <NoteNotFound />
-          )}
-        </Container>
+    <MainLayout>
+      {isLoading ? (
+        <div className="flex h-[calc(100vh_-_128px_-_5rem)] justify-center">
+          <Spinner classes="w-10 h-10 m-auto" />
+        </div>
+      ) : note ? (
+        <div className="mt-4 h-fit bg-white p-4 dark:bg-slate-700">
+          <h1 className="text-2xl">{note.title}</h1>
+          <span className="font-semibold text-gray-500 dark:text-gray-400">
+            {showFormattedDate(note.createdAt)}
+          </span>
+          <div>{note.body}</div>
+        </div>
+      ) : (
+        <NoteNotFound />
+      )}
 
-        {note && (
-          <>
-            <div className="fixed bottom-[72px] right-4 z-10 grid grid-cols-3 gap-2">
-              {note.archived ? (
-                <RoundedButton
-                  color="bg-orange-500 dark:bg-orange-700 text-white"
-                  handleClick={() => handleUnarchive(note.id)}
-                >
-                  <ArchiveBoxXMarkIcon className="m-auto h-6 w-6" />
-                </RoundedButton>
-              ) : (
-                <RoundedButton
-                  color="bg-green-500 dark:bg-green-700 text-white"
-                  handleClick={() => handleArchive(note.id)}
-                >
-                  <ArchiveBoxArrowDownIcon className="m-auto h-6 w-6" />
-                </RoundedButton>
-              )}
-
+      {note && (
+        <>
+          <div className="fixed bottom-[72px] right-4 z-10 grid grid-cols-3 gap-2">
+            {note.archived ? (
               <RoundedButton
-                color="bg-red-500 dark:bg-red-700 text-white"
-                handleClick={() =>
-                  handleOpenModalDeleteNote(note.id, note?.title)
-                }
+                color="bg-orange-500 dark:bg-orange-700 text-white"
+                handleClick={() => handleUnarchive(note.id)}
               >
-                <TrashIcon className="m-auto h-6 w-6" />
+                <ArchiveBoxXMarkIcon className="m-auto h-6 w-6" />
               </RoundedButton>
-            </div>
+            ) : (
+              <RoundedButton
+                color="bg-green-500 dark:bg-green-700 text-white"
+                handleClick={() => handleArchive(note.id)}
+              >
+                <ArchiveBoxArrowDownIcon className="m-auto h-6 w-6" />
+              </RoundedButton>
+            )}
 
-            <Modal
-              {...modalData}
-              titleColor="text-red-500"
-              onClose={handleCloseModal}
+            <RoundedButton
+              color="bg-red-500 dark:bg-red-700 text-white"
+              handleClick={() =>
+                handleOpenModalDeleteNote(note.id, note?.title)
+              }
             >
-              <p>
-                {t.modalMessage}{" "}
-                <span className="font-semibold">{modalData.noteTitle}</span>?
-              </p>
-              <div className="float-right grid w-56 grid-cols-2 gap-2 text-white">
-                <SimpleButton
-                  color="bg-gray-300"
-                  classes="text-black"
-                  handleClick={handleCloseModal}
-                >
-                  {t.modalCancelButton}
-                </SimpleButton>
-                <SimpleButton color="bg-red-500" handleClick={hanldeDeleteNote}>
-                  {t.modalDeleteButton}
-                </SimpleButton>
-              </div>
-            </Modal>
-          </>
-        )}
-      </Main>
-      <NavBar page="search" />
-    </div>
+              <TrashIcon className="m-auto h-6 w-6" />
+            </RoundedButton>
+          </div>
+
+          <Modal
+            {...modalData}
+            titleColor="text-red-500"
+            onClose={handleCloseModal}
+          >
+            <p>
+              {t.modalMessage}{" "}
+              <span className="font-semibold">{modalData.noteTitle}</span>?
+            </p>
+            <div className="float-right grid w-56 grid-cols-2 gap-2 text-white">
+              <SimpleButton
+                color="bg-gray-300"
+                classes="text-black"
+                handleClick={handleCloseModal}
+              >
+                {t.modalCancelButton}
+              </SimpleButton>
+              <SimpleButton color="bg-red-500" handleClick={hanldeDeleteNote}>
+                {t.modalDeleteButton}
+              </SimpleButton>
+            </div>
+          </Modal>
+        </>
+      )}
+    </MainLayout>
   );
 }
 
