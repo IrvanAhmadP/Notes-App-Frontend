@@ -10,7 +10,7 @@ import Notes from "src/pages/Notes";
 import NewNote from "src/pages/NewNote";
 import NotFound from "src/pages/404";
 
-import { Spinner } from "src/components";
+import { Loading } from "src/components";
 
 function App() {
   const activeNotes = <Notes page="active" />;
@@ -78,11 +78,7 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
   }
 
   if (isLoading) {
-    return (
-      <div className="flex h-[calc(100vh)]">
-        <Spinner classes="w-10 m-auto" />
-      </div>
-    );
+    return <Loading loadingHeight="h-[calc(100vh)]" spinnerWidth="w-10" />;
   }
 
   return children;
@@ -100,11 +96,7 @@ function AuthRoute({ children }: AuthRouteProps) {
   }
 
   if (isLoading) {
-    return (
-      <div className="flex h-[calc(100vh)]">
-        <Spinner classes="w-10 m-auto" />
-      </div>
-    );
+    return <Loading loadingHeight="h-[calc(100vh)]" spinnerWidth="w-10" />;
   }
 
   return children;

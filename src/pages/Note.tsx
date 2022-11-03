@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import {
   Modal,
-  Spinner,
+  Loading,
   NoteNotFound,
   SimpleButton,
   RoundedButton,
@@ -97,9 +97,10 @@ function Note() {
   return (
     <MainLayout>
       {isLoading ? (
-        <div className="flex h-[calc(100vh_-_128px_-_5rem)] justify-center">
-          <Spinner classes="w-10 h-10 m-auto" />
-        </div>
+        <Loading
+          loadingHeight="h-[calc(100vh_-_128px_-_5rem)]"
+          spinnerWidth="w-10"
+        />
       ) : note ? (
         <div className="mt-4 h-fit bg-white p-4 dark:bg-slate-700">
           <h1 className="text-2xl">{note.title}</h1>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import NotesContainer from "src/components/NotesContainer";
-import { Spinner, NewNoteButton, NavBar, SearchInput } from "src/components";
+import { Loading, NewNoteButton, NavBar, SearchInput } from "src/components";
 import { noteTypes } from "src/@types/note";
 import { getActiveNotes, getArchivedNotes } from "src/utils/api";
 import { useSearch } from "src/contexts/searchContext";
@@ -72,9 +72,10 @@ function Notes({ page }: NotesProps) {
       <SearchInput searchMatchTotal={matchNotes.length} />
 
       {isLoading ? (
-        <div className="flex h-[calc(100vh_-_128px_-_5rem)] justify-center">
-          <Spinner classes="w-10 h-10 m-auto" />
-        </div>
+        <Loading
+          loadingHeight="h-[calc(100vh_-_128px_-_5rem)]"
+          spinnerWidth="w-10"
+        />
       ) : (
         notes && (
           <NotesContainer

@@ -1,8 +1,9 @@
+import Container from "src/components/Container";
 import Header from "src/components/Header";
 import Hr from "src/components/Hr";
+import Loading from "src/components/Loading";
 import Main from "src/components/Main";
 import Modal from "src/components/Modal";
-import Container from "src/components/Container";
 import DataNotFound from "src/components/NotFound/DataNotFound";
 import NoteNotFound from "src/components/NotFound/NoteNotFound";
 import Note from "src/components/Note";
@@ -17,14 +18,15 @@ import NavBar from "src/components/NavBar";
 import Spinner from "src/components/Spinner";
 
 export {
+  Container,
   Header,
   Hr,
+  Loading,
   Main,
   Checkbox,
   Input,
   SearchInput,
   Modal,
-  Container,
   DataNotFound,
   NoteNotFound,
   Note,
