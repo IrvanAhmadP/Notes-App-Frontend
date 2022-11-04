@@ -73,7 +73,7 @@ function Notes({ page }: NotesProps) {
 
       {isLoading ? (
         <Loading
-          loadingHeight="h-[calc(100vh_-_128px_-_5rem)]"
+          loadingHeight="h-[calc(100vh_-_128px_-_7rem)]"
           spinnerWidth="w-10"
         />
       ) : (
