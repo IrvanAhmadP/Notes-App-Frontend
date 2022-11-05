@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
-import NotesContainer from "src/components/NotesContainer";
-import { Loading, NewNoteButton, NavBar, SearchInput } from "src/components";
+import {
+  Loading,
+  NewNoteButton,
+  NavBar,
+  SearchInput,
+  Modal,
+  SimpleButton,
+  DataNotFound,
+  Note,
+} from "src/components";
 import { noteTypes } from "src/@types/note";
-import { getActiveNotes, getArchivedNotes } from "src/utils/api";
+import { getActiveNotes, getArchivedNotes, deleteNote } from "src/utils/api";
 import { useSearch } from "src/contexts/searchContext";
 import { useLocale } from "src/contexts/localeContext";
 import { notesContent } from "src/utils/content";
@@ -18,6 +26,9 @@ function Notes({ page }: NotesProps) {
   const [isLoading, setIsLoading] = useState(true);
   const { search } = useSearch();
   const [notes, setNotes] = useState<noteTypes[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [noteIDToDelete, setNoteIDToDelete] = useState("");
+  const [noteTitleToDelete, setNoteTitleToDelete] = useState("");
 
   useEffect(() => {
     if (page === "active") {
@@ -59,6 +70,23 @@ function Notes({ page }: NotesProps) {
     );
   };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleOpenModalDeleteNote = (id: string, noteTitle: string) => {
+    setNoteIDToDelete(id);
+    setNoteTitleToDelete(noteTitle);
+    setIsModalOpen(true);
+  };
+
+  const hanldeDeleteNote = () => {
+    handleCloseModal();
+
+    deleteNote(noteIDToDelete);
+    handleRemoveNoteFromList(noteIDToDelete);
+  };
+
   const matchNotes = notes.filter(
     (n) => n.title?.toLowerCase().search(search.toLowerCase()) !== -1
   );
@@ -78,15 +106,48 @@ function Notes({ page }: NotesProps) {
         />
       ) : (
         notes && (
-          <NotesContainer
-            notes={matchNotes}
-            handleRemoveNoteFromList={handleRemoveNoteFromList}
-          />
+          <div className="first:rounded-lg">
+            {notes.length === 0 ? (
+              <DataNotFound />
+            ) : (
+              notes.map((note: any) => (
+                <Note
+                  key={note.id}
+                  {...note}
+                  handleOpenModalDeleteNote={handleOpenModalDeleteNote}
+                />
+              ))
+            )}
+          </div>
         )
       )}
 
       <NewNoteButton />
       <NavBar page={page} />
+
+      <Modal
+        isOpen={isModalOpen}
+        title="Delete Note"
+        titleColor="text-red-500"
+        onClose={handleCloseModal}
+      >
+        <p>
+          Are you sure want to delete{" "}
+          <span className="font-semibold">{noteTitleToDelete}</span>?
+        </p>
+        <div className="float-right grid w-56 grid-cols-2 gap-2 text-white">
+          <SimpleButton
+            color="bg-gray-300"
+            classes="text-black"
+            handleClick={handleCloseModal}
+          >
+            Cancel
+          </SimpleButton>
+          <SimpleButton color="bg-red-500" handleClick={hanldeDeleteNote}>
+            Delete
+          </SimpleButton>
+        </div>
+      </Modal>
     </MainLayout>
   );
 }
